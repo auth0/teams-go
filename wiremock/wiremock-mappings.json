@@ -1,0 +1,616 @@
+{
+  "mappings": [
+    {
+      "id": "8b33fdd2-a3b9-431e-8a1e-cd23d81fe229",
+      "name": "Retrieve a paginated list of all team members - default",
+      "request": {
+        "urlPathTemplate": "/api/members",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "queryParameters": {
+          "take": {
+            "equalTo": "1"
+          },
+          "from": {
+            "equalTo": "from"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"members\": [\n    {\n      \"id\": \"id\",\n      \"name\": \"John Doe\",\n      \"given_name\": \"John\",\n      \"family_name\": \"Doe\",\n      \"nickname\": \"johndoe\",\n      \"email\": \"john.doe@example.com\",\n      \"role\": \"teams_owner\"\n    }\n  ],\n  \"next\": \"next\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8b33fdd2-a3b9-431e-8a1e-cd23d81fe229",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "db70f2d4-dcb2-4105-939a-4008737b44bd",
+      "name": "Invite a new team member - default",
+      "request": {
+        "urlPathTemplate": "/api/members",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"id\": \"invite_abc123\",\n  \"email\": \"jane.smith@company.com\",\n  \"role\": \"teams_contributor\",\n  \"tenant_ids\": [\n    \"538c9e21-e3d5-4ad6-b3d0-352c62369fb0\",\n    \"b1c9e21e-1234-4ad6-b3d0-352c6236abcd\"\n  ],\n  \"tenant_roles\": [\n    \"owner\",\n    \"editor-users\"\n  ],\n  \"client_ids\": [\n    \"client_123\",\n    \"client_456\"\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "db70f2d4-dcb2-4105-939a-4008737b44bd",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f8a43b22-debe-4ad0-88f0-94e9a4cfff7d",
+      "name": "Retrieve basic information for a specific team member - default",
+      "request": {
+        "urlPathTemplate": "/api/members/{id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"id\": \"auth0|68da0038bab277c02ed1d4c8\",\n  \"name\": \"name\",\n  \"given_name\": \"given_name\",\n  \"family_name\": \"family_name\",\n  \"nickname\": \"nickname\",\n  \"email\": \"email\",\n  \"role\": \"teams_owner\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f8a43b22-debe-4ad0-88f0-94e9a4cfff7d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "fad4ac47-2daa-47ab-95a5-45a701d459d2",
+      "name": "Delete a team member - default",
+      "request": {
+        "urlPathTemplate": "/api/members/{id}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "fad4ac47-2daa-47ab-95a5-45a701d459d2",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a276441b-5bbe-4b19-8e08-481f45a95699",
+      "name": "Update a team member's role - default",
+      "request": {
+        "urlPathTemplate": "/api/members/{id}",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"id\": \"auth0|68da0038bab277c02ed1d4c8\",\n  \"email\": \"john.doe@example.com\",\n  \"role\": \"teams_owner\",\n  \"name\": \"John Doe\",\n  \"given_name\": \"John\",\n  \"family_name\": \"Doe\",\n  \"nickname\": \"johndoe\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a276441b-5bbe-4b19-8e08-481f45a95699",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6d812a42-8a0c-46d0-80ae-ba80d45c327d",
+      "name": "List all tenants under the current team - default",
+      "request": {
+        "urlPathTemplate": "/api/tenants",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "queryParameters": {
+          "take": {
+            "equalTo": "1"
+          },
+          "from": {
+            "equalTo": "from"
+          },
+          "sort": {
+            "equalTo": "sort"
+          },
+          "environment": {
+            "equalTo": "US-3"
+          },
+          "environment_tag": {
+            "equalTo": "development"
+          },
+          "locality": {
+            "equalTo": "us"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"tenants\": [\n    {\n      \"tenant_id\": \"tenant_id\",\n      \"tenant_name\": \"acme-development-tenant\",\n      \"environment\": \"US-3\",\n      \"environment_tag\": \"development\",\n      \"domain\": \"acme-development-tenant.us.auth0.com\",\n      \"locality\": \"us\",\n      \"created_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"next\": \"next\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6d812a42-8a0c-46d0-80ae-ba80d45c327d",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "713c29e0-8a4b-4754-9d7b-4502d7634b94",
+      "name": "Create a tenant under the current team - default",
+      "request": {
+        "urlPathTemplate": "/api/tenants",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"tenant_id\": \"538c9e21-e3d5-4ad6-b3d0-352c62369fb0\",\n  \"tenant_name\": \"acme-development-tenant\",\n  \"domain\": \"acme-development-tenant.us.auth0.com\",\n  \"environment_tag\": \"development\",\n  \"locality\": \"us\",\n  \"environment\": \"US-3\",\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"management_client\": {\n    \"client_name\": \"client_name\",\n    \"client_id\": \"client_id\",\n    \"client_secret\": \"client_secret\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "713c29e0-8a4b-4754-9d7b-4502d7634b94",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "dd45afba-3207-4c62-83cc-3a3ed73d295a",
+      "name": "Retrieve all metadata for a specific tenant, including domain, environment, locality, and creation date - default",
+      "request": {
+        "urlPathTemplate": "/api/tenants/{tenantId}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "tenantId": {
+            "equalTo": "tenantId"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"tenant_id\": \"tenant_id\",\n  \"tenant_name\": \"acme-development-tenant\",\n  \"domain\": \"acme-development-tenant.us.auth0.com\",\n  \"environment\": \"US-3\",\n  \"locality\": \"us\",\n  \"environment_tag\": \"development\",\n  \"created_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "dd45afba-3207-4c62-83cc-3a3ed73d295a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "61495320-1f46-42c9-944c-b09e831d96af",
+      "name": "Delete a tenant from the current team - default",
+      "request": {
+        "urlPathTemplate": "/api/tenants/{tenantId}",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "tenantId": {
+            "equalTo": "tenantId"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "61495320-1f46-42c9-944c-b09e831d96af",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1d4e559d-d77c-4ed3-9480-5487b95f4a54",
+      "name": "Retrieve environment list of a team - default",
+      "request": {
+        "urlPathTemplate": "/api/environments",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"environments\": [\n    \"US-3\"\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1d4e559d-d77c-4ed3-9480-5487b95f4a54",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "f3411095-d606-4cbe-979c-5fc4657f5c9b",
+      "name": "Retrieve team activity logs - default",
+      "request": {
+        "urlPathTemplate": "/api/activity/logs",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "queryParameters": {
+          "take": {
+            "equalTo": "1"
+          },
+          "from": {
+            "equalTo": "from"
+          },
+          "since": {
+            "equalTo": "2024-01-15T09:30:00.000Z"
+          },
+          "until": {
+            "equalTo": "2024-01-15T09:30:00.000Z"
+          },
+          "type": {
+            "equalTo": "Team Member"
+          },
+          "status": {
+            "equalTo": "Success"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"logs\": [\n    {\n      \"id\": \"id\",\n      \"type\": \"Team Member\",\n      \"status\": \"Success\",\n      \"details\": {\n        \"key\": \"value\"\n      },\n      \"ip\": \"ip\",\n      \"hostname\": \"hostname\",\n      \"user_agent\": \"user_agent\",\n      \"version\": \"version\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"current_event\": \"current_event\",\n      \"actor\": {\n        \"id\": \"id\",\n        \"type\": \"user\",\n        \"name\": \"name\"\n      }\n    }\n  ],\n  \"next\": \"next\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f3411095-d606-4cbe-979c-5fc4657f5c9b",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "8f9eb3d3-27c8-410c-a747-b984647fb2e3",
+      "name": "Add to a team member's tenant access - default",
+      "request": {
+        "urlPathTemplate": "/api/members/{id}/tenants",
+        "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"status_code\": 200,\n  \"message\": \"Operation completed with errors\",\n  \"summary\": {\n    \"total_count\": 2,\n    \"success_count\": 1,\n    \"failure_count\": 1\n  },\n  \"success\": [\n    {\n      \"tenant_id\": \"538c9e21-e3d5-4ad6-b3d0-352c62369fb0\",\n      \"roles\": [\n        \"owner\",\n        \"editor-specific-apps\"\n      ],\n      \"client_ids\": [\n        \"client_123\"\n      ]\n    }\n  ],\n  \"failure\": [\n    {\n      \"tenant_id\": \"b1c9e21e-1234-4ad6-b3d0-352c6236abcd\",\n      \"status\": 409,\n      \"title\": \"This tenant is already added\",\n      \"type\": \"TENANT_ALREADY_EXISTS\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8f9eb3d3-27c8-410c-a747-b984647fb2e3",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d6292067-f8e8-4ab4-8302-ee265d754ed6",
+      "name": "Remove a team member's tenant access - default",
+      "request": {
+        "urlPathTemplate": "/api/members/{id}/tenants",
+        "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"status_code\": 1,\n  \"message\": \"message\",\n  \"summary\": {\n    \"total_count\": 1,\n    \"success_count\": 1,\n    \"failure_count\": 1\n  },\n  \"success\": [\n    {\n      \"tenant_ids\": [\n        \"tenant_ids\"\n      ]\n    }\n  ],\n  \"failure\": [\n    {\n      \"tenant_id\": \"tenant_id\",\n      \"status\": 1,\n      \"title\": \"title\",\n      \"type\": \"type\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d6292067-f8e8-4ab4-8302-ee265d754ed6",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "c7884e94-5b7c-4db4-9288-cb3dc323d205",
+      "name": "Update a team member's tenant access - default",
+      "request": {
+        "urlPathTemplate": "/api/members/{id}/tenants",
+        "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"status_code\": 200,\n  \"message\": \"Partial success: some tenants could not be updated\",\n  \"summary\": {\n    \"total_count\": 2,\n    \"success_count\": 1,\n    \"failure_count\": 1\n  },\n  \"success\": [\n    {\n      \"tenant_id\": \"538c9e21-e3d5-4ad6-b3d0-352c62369fb0\",\n      \"roles\": [\n        \"owner\",\n        \"editor-specific-apps\"\n      ],\n      \"client_ids\": [\n        \"client_123\"\n      ]\n    }\n  ],\n  \"failure\": [\n    {\n      \"tenant_id\": \"b1c9e21e-1234-4ad6-b3d0-352c6236abcd\",\n      \"status\": 404,\n      \"title\": \"Tenant not found\",\n      \"type\": \"NOT_FOUND\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c7884e94-5b7c-4db4-9288-cb3dc323d205",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f2b05925-7e56-48c2-a383-d0c1a2bbb14c",
+      "name": "List a member's tenant access within an environment - default",
+      "request": {
+        "urlPathTemplate": "/api/members/{id}/tenants/{environment}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "id": {
+            "equalTo": "id"
+          },
+          "environment": {
+            "equalTo": "environment"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"environment\": \"US-3\",\n  \"tenants\": [\n    {\n      \"tenant_id\": \"tenant_id\",\n      \"domain\": \"acme-development-tenant.us.auth0.com\",\n      \"roles\": [\n        {\n          \"role\": \"owner\",\n          \"client_ids\": [\n            \"App-A\",\n            \"App-B\"\n          ]\n        }\n      ]\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f2b05925-7e56-48c2-a383-d0c1a2bbb14c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2fa7289f-4fc3-4302-a58d-2aa1e0364239",
+      "name": "Retrieve a paginated list of members for a specific tenant. - default",
+      "request": {
+        "urlPathTemplate": "/api/tenants/{tenantId}/members",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "tenantId": {
+            "equalTo": "tenantId"
+          }
+        },
+        "queryParameters": {
+          "take": {
+            "equalTo": "1"
+          },
+          "from": {
+            "equalTo": "from"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"members\": [\n    {\n      \"id\": \"auth0|68da0038bab277c02ed1d4c8\",\n      \"name\": \"John Doe\",\n      \"email\": \"john.doe@example.com\",\n      \"roles\": [\n        \"owner\"\n      ],\n      \"given_name\": \"John\",\n      \"family_name\": \"Doe\",\n      \"nickname\": \"johndoe\"\n    }\n  ],\n  \"next\": \"next\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2fa7289f-4fc3-4302-a58d-2aa1e0364239",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    }
+  ],
+  "meta": {
+    "total": 16
+  }
+}
