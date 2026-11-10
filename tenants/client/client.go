@@ -50,7 +50,7 @@ func (c *Client) List(
 		c.baseURL,
 		"https://teamSlug.teams.auth0.com",
 	)
-	endpointURL := baseURL + "/api/v1/tenants"
+	endpointURL := baseURL + "/api/tenants"
 	queryParams, err := internal.QueryValuesWithDefaults(
 		request,
 		map[string]any{
