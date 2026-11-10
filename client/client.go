@@ -3,7 +3,6 @@
 package client
 
 import (
-	activity "github.com/auth0/teams-go/activity"
 	core "github.com/auth0/teams-go/core"
 	environments "github.com/auth0/teams-go/environments"
 	internal "github.com/auth0/teams-go/internal"
@@ -16,7 +15,6 @@ type Teams struct {
 	Members      *client.Client
 	Tenants      *tenantsclient.Client
 	Environments *environments.Client
-	Activity     *activity.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -29,7 +27,6 @@ func NewWithOptions(opts ...option.RequestOption) *Teams {
 		Members:      client.NewClient(options),
 		Tenants:      tenantsclient.NewClient(options),
 		Environments: environments.NewClient(options),
-		Activity:     activity.NewClient(options),
 		options:      options,
 		baseURL:      options.BaseURL,
 		caller: internal.NewCaller(

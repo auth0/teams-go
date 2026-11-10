@@ -50,7 +50,7 @@ func (c *Client) List(
 		c.baseURL,
 		"https://teamSlug.teams.auth0.com",
 	)
-	endpointURL := baseURL + "/api/tenants"
+	endpointURL := baseURL + "/api/v1/tenants"
 	queryParams, err := internal.QueryValuesWithDefaults(
 		request,
 		map[string]any{
@@ -140,7 +140,7 @@ func (c *Client) Get(
 	return response.Body, nil
 }
 
-// Delete a tenant from the current team
+// Delete a tenant from the current team. Tenants tagged as Production cannot be deleted through this API. To protect a tenant from accidental deletion, tag it as Production via Tenant Settings. [Link](https://auth0.com/docs/get-started/tenant-settings#environment-tag).
 func (c *Client) Delete(
 	ctx context.Context,
 	// The id of the tenant to delete

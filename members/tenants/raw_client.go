@@ -33,161 +33,11 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) Create(
-	ctx context.Context,
-	// The unique ID of the team member to update
-	id string,
-	request *teams.CreateMembersTenantsRequestContent,
-	opts ...option.RequestOption,
-) (*core.Response[*teams.CreateMembersTenantsResponseContent], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://teamSlug.teams.auth0.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/members/%v/tenants",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	var response *teams.CreateMembersTenantsResponseContent
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:                endpointURL,
-			Method:             http.MethodPut,
-			Headers:            headers,
-			MaxAttempts:        options.MaxAttempts,
-			DisableRetries:     options.DisableRetries,
-			BodyProperties:     options.BodyProperties,
-			QueryParameters:    options.QueryParameters,
-			Client:             options.HTTPClient,
-			Request:            request,
-			Response:           &response,
-			ResponseIsOptional: true,
-			ErrorDecoder:       internal.NewErrorDecoder(members.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*teams.CreateMembersTenantsResponseContent]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) Remove(
-	ctx context.Context,
-	// The unique ID of the team member.
-	id string,
-	request *teams.DeleteMembersTenantsRequestContent,
-	opts ...option.RequestOption,
-) (*core.Response[*teams.DeleteMembersTenantsResponseContent], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://teamSlug.teams.auth0.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/members/%v/tenants",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	var response *teams.DeleteMembersTenantsResponseContent
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:                endpointURL,
-			Method:             http.MethodDelete,
-			Headers:            headers,
-			MaxAttempts:        options.MaxAttempts,
-			DisableRetries:     options.DisableRetries,
-			BodyProperties:     options.BodyProperties,
-			QueryParameters:    options.QueryParameters,
-			Client:             options.HTTPClient,
-			Request:            request,
-			Response:           &response,
-			ResponseIsOptional: true,
-			ErrorDecoder:       internal.NewErrorDecoder(members.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*teams.DeleteMembersTenantsResponseContent]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) Update(
-	ctx context.Context,
-	// The unique ID of the team member to update
-	id string,
-	request *teams.UpdateMembersTenantsRequestContent,
-	opts ...option.RequestOption,
-) (*core.Response[*teams.UpdateMembersTenantsResponseContent], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://teamSlug.teams.auth0.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/members/%v/tenants",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	var response *teams.UpdateMembersTenantsResponseContent
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:                endpointURL,
-			Method:             http.MethodPatch,
-			Headers:            headers,
-			MaxAttempts:        options.MaxAttempts,
-			DisableRetries:     options.DisableRetries,
-			BodyProperties:     options.BodyProperties,
-			QueryParameters:    options.QueryParameters,
-			Client:             options.HTTPClient,
-			Request:            request,
-			Response:           &response,
-			ResponseIsOptional: true,
-			ErrorDecoder:       internal.NewErrorDecoder(members.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*teams.UpdateMembersTenantsResponseContent]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
 func (r *RawClient) List(
 	ctx context.Context,
 	// Unique ID of the team member.
-	id string,
-	// The cloud environment identifier (e.g. 'US-3', 'EU-1', 'acme-dev').
+	memberID string,
+	// The cloud environment identifier (e.g. 'prod-us-3', 'prod-eu-1', 'acme-dev').
 	environment string,
 	opts ...option.RequestOption,
 ) (*core.Response[*teams.ListMembersTenantsResponseContent], error) {
@@ -198,8 +48,8 @@ func (r *RawClient) List(
 		"https://teamSlug.teams.auth0.com",
 	)
 	endpointURL := internal.EncodeURL(
-		baseURL+"/api/members/%v/tenants/%v",
-		id,
+		baseURL+"/api/v1/members/%v/tenants/%v",
+		memberID,
 		environment,
 	)
 	headers := internal.MergeHeaders(

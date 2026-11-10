@@ -10,11 +10,11 @@ import (
 // Invalid input based on schema.
 type BadRequestError struct {
 	*core.APIError
-	Body any
+	Body *BadRequestErrorBody
 }
 
 func (b *BadRequestError) UnmarshalJSON(data []byte) error {
-	var body any
+	var body *BadRequestErrorBody
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -58,11 +58,11 @@ func (c *ConflictError) Unwrap() error {
 // Forbidden. The message will vary depending on the cause.
 type ForbiddenError struct {
 	*core.APIError
-	Body any
+	Body *ForbiddenErrorBody
 }
 
 func (f *ForbiddenError) UnmarshalJSON(data []byte) error {
-	var body any
+	var body *ForbiddenErrorBody
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -82,11 +82,11 @@ func (f *ForbiddenError) Unwrap() error {
 // Internal Server Error. The server encountered an unexpected condition and could not fulfill the request.
 type InternalServerError struct {
 	*core.APIError
-	Body any
+	Body *InternalServerErrorBody
 }
 
 func (i *InternalServerError) UnmarshalJSON(data []byte) error {
-	var body any
+	var body *InternalServerErrorBody
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -106,11 +106,11 @@ func (i *InternalServerError) Unwrap() error {
 // Not Found. The message will vary depending on the cause.
 type NotFoundError struct {
 	*core.APIError
-	Body any
+	Body *NotFoundErrorBody
 }
 
 func (n *NotFoundError) UnmarshalJSON(data []byte) error {
-	var body any
+	var body *NotFoundErrorBody
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -127,14 +127,38 @@ func (n *NotFoundError) Unwrap() error {
 	return n.APIError
 }
 
-// Too Many Requests. The message will vary depending on the cause.
+// Service Unavailable. The service is temporarily unable to handle the request.
+type ServiceUnavailableError struct {
+	*core.APIError
+	Body *ServiceUnavailableErrorBody
+}
+
+func (s *ServiceUnavailableError) UnmarshalJSON(data []byte) error {
+	var body *ServiceUnavailableErrorBody
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	s.StatusCode = 503
+	s.Body = body
+	return nil
+}
+
+func (s *ServiceUnavailableError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(s.Body)
+}
+
+func (s *ServiceUnavailableError) Unwrap() error {
+	return s.APIError
+}
+
+// Too Many Requests. The message will vary depending on the cause. Rate limit metadata is returned in the X-RateLimit-Limit, X-RateLimit-Remaining and X-RateLimit-Reset headers.
 type TooManyRequestsError struct {
 	*core.APIError
-	Body any
+	Body *TooManyRequestsErrorBody
 }
 
 func (t *TooManyRequestsError) UnmarshalJSON(data []byte) error {
-	var body any
+	var body *TooManyRequestsErrorBody
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -154,11 +178,11 @@ func (t *TooManyRequestsError) Unwrap() error {
 // Token has expired or signature is invalid.
 type UnauthorizedError struct {
 	*core.APIError
-	Body any
+	Body *UnauthorizedErrorBody
 }
 
 func (u *UnauthorizedError) UnmarshalJSON(data []byte) error {
-	var body any
+	var body *UnauthorizedErrorBody
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}

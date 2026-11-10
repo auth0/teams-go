@@ -34,78 +34,18 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// This endpoint can be used to add new tenants access
-func (c *Client) Create(
-	ctx context.Context,
-	// The unique ID of the team member to update
-	id string,
-	request *teams.CreateMembersTenantsRequestContent,
-	opts ...option.RequestOption,
-) (*teams.CreateMembersTenantsResponseContent, error) {
-	response, err := c.WithRawResponse.Create(
-		ctx,
-		id,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// This endpoint can be used to remove tenant access
-func (c *Client) Remove(
-	ctx context.Context,
-	// The unique ID of the team member.
-	id string,
-	request *teams.DeleteMembersTenantsRequestContent,
-	opts ...option.RequestOption,
-) (*teams.DeleteMembersTenantsResponseContent, error) {
-	response, err := c.WithRawResponse.Remove(
-		ctx,
-		id,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// This endpoint can be used to update existing tenant roles.
-func (c *Client) Update(
-	ctx context.Context,
-	// The unique ID of the team member to update
-	id string,
-	request *teams.UpdateMembersTenantsRequestContent,
-	opts ...option.RequestOption,
-) (*teams.UpdateMembersTenantsResponseContent, error) {
-	response, err := c.WithRawResponse.Update(
-		ctx,
-		id,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// This endpoint retrieves a list of all tenants within a specific environment that the team member has access to. Environment identifiers required for this request can be obtained using the /api/environments endpoint, which provides details for all environments where tenants associated with your team exists.
+// This endpoint retrieves a list of all tenants within a specific environment that the team member has access to. Environment identifiers required for this request can be obtained using the /api/v1/environments endpoint, which provides details for all environments where tenants associated with your team exists.
 func (c *Client) List(
 	ctx context.Context,
 	// Unique ID of the team member.
-	id string,
-	// The cloud environment identifier (e.g. 'US-3', 'EU-1', 'acme-dev').
+	memberID string,
+	// The cloud environment identifier (e.g. 'prod-us-3', 'prod-eu-1', 'acme-dev').
 	environment string,
 	opts ...option.RequestOption,
 ) (*teams.ListMembersTenantsResponseContent, error) {
 	response, err := c.WithRawResponse.List(
 		ctx,
-		id,
+		memberID,
 		environment,
 		opts...,
 	)

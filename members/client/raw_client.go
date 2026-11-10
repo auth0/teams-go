@@ -32,54 +32,10 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) Invite(
-	ctx context.Context,
-	request *teams.InviteMembersRequestContent,
-	opts ...option.RequestOption,
-) (*core.Response[*teams.InviteMembersResponseContent], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://teamSlug.teams.auth0.com",
-	)
-	endpointURL := baseURL + "/api/members"
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	var response *teams.InviteMembersResponseContent
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			DisableRetries:  options.DisableRetries,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(teams.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*teams.InviteMembersResponseContent]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
 func (r *RawClient) Get(
 	ctx context.Context,
 	// The unique ID of the team member to retrieve.
-	id string,
+	memberID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*teams.GetMembersResponseContent], error) {
 	options := core.NewRequestOptions(opts...)
@@ -89,8 +45,8 @@ func (r *RawClient) Get(
 		"https://teamSlug.teams.auth0.com",
 	)
 	endpointURL := internal.EncodeURL(
-		baseURL+"/api/members/%v",
-		id,
+		baseURL+"/api/v1/members/%v",
+		memberID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -116,99 +72,6 @@ func (r *RawClient) Get(
 		return nil, err
 	}
 	return &core.Response[*teams.GetMembersResponseContent]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) Delete(
-	ctx context.Context,
-	// The unique ID of the team member to delete.
-	id string,
-	opts ...option.RequestOption,
-) (*core.Response[any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://teamSlug.teams.auth0.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/members/%v",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodDelete,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			DisableRetries:  options.DisableRetries,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			ErrorDecoder:    internal.NewErrorDecoder(teams.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       nil,
-	}, nil
-}
-
-func (r *RawClient) Update(
-	ctx context.Context,
-	// The unique ID of the team member to update
-	id string,
-	request *teams.UpdateMembersRequestContent,
-	opts ...option.RequestOption,
-) (*core.Response[*teams.UpdateMembersResponseContent], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://teamSlug.teams.auth0.com",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/api/members/%v",
-		id,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	var response *teams.UpdateMembersResponseContent
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPatch,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			DisableRetries:  options.DisableRetries,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(teams.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*teams.UpdateMembersResponseContent]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

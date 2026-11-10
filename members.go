@@ -5,13 +5,12 @@ package teams
 import (
 	json "encoding/json"
 	fmt "fmt"
-	big "math/big"
-
 	internal "github.com/auth0/teams-go/internal"
+	big "math/big"
 )
 
 var (
-	getMembersResponseContentFieldID         = big.NewInt(1 << 0)
+	getMembersResponseContentFieldMemberID   = big.NewInt(1 << 0)
 	getMembersResponseContentFieldName       = big.NewInt(1 << 1)
 	getMembersResponseContentFieldGivenName  = big.NewInt(1 << 2)
 	getMembersResponseContentFieldFamilyName = big.NewInt(1 << 3)
@@ -22,7 +21,7 @@ var (
 
 type GetMembersResponseContent struct {
 	// Unique ID of the team member
-	ID string `json:"id" url:"id"`
+	MemberID string `json:"member_id" url:"member_id"`
 	// Full name of the team member.
 	Name string `json:"name" url:"name"`
 	// First name of the team member. Returns empty string if not set.
@@ -43,11 +42,11 @@ type GetMembersResponseContent struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetMembersResponseContent) GetID() string {
+func (g *GetMembersResponseContent) GetMemberID() string {
 	if g == nil {
 		return ""
 	}
-	return g.ID
+	return g.MemberID
 }
 
 func (g *GetMembersResponseContent) GetName() string {
@@ -106,11 +105,11 @@ func (g *GetMembersResponseContent) require(field *big.Int) {
 	g.explicitFields.Or(g.explicitFields, field)
 }
 
-// SetID sets the ID field and marks it as non-optional;
+// SetMemberID sets the MemberID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMembersResponseContent) SetID(id string) {
-	g.ID = id
-	g.require(getMembersResponseContentFieldID)
+func (g *GetMembersResponseContent) SetMemberID(memberID string) {
+	g.MemberID = memberID
+	g.require(getMembersResponseContentFieldMemberID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
@@ -195,175 +194,6 @@ func (g *GetMembersResponseContent) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	inviteMembersResponseContentFieldID          = big.NewInt(1 << 0)
-	inviteMembersResponseContentFieldEmail       = big.NewInt(1 << 1)
-	inviteMembersResponseContentFieldRole        = big.NewInt(1 << 2)
-	inviteMembersResponseContentFieldTenantIDs   = big.NewInt(1 << 3)
-	inviteMembersResponseContentFieldTenantRoles = big.NewInt(1 << 4)
-	inviteMembersResponseContentFieldClientIDs   = big.NewInt(1 << 5)
-)
-
-type InviteMembersResponseContent struct {
-	// The unique ID of the newly created team member
-	ID string `json:"id" url:"id"`
-	// The email of the team member
-	Email string             `json:"email" url:"email"`
-	Role  TeamMemberRoleEnum `json:"role" url:"role"`
-	// The list of tenants granted to the team member
-	TenantIDs []TenantID `json:"tenant_ids,omitempty" url:"tenant_ids,omitempty"`
-	// The list the roles granted to the team member for each tenant
-	TenantRoles []TenantMemberRoleEnum `json:"tenant_roles,omitempty" url:"tenant_roles,omitempty"`
-	// The list of apps the user has access to under the editor-specific-apps role.
-	ClientIDs []ClientID `json:"client_ids,omitempty" url:"client_ids,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (i *InviteMembersResponseContent) GetID() string {
-	if i == nil {
-		return ""
-	}
-	return i.ID
-}
-
-func (i *InviteMembersResponseContent) GetEmail() string {
-	if i == nil {
-		return ""
-	}
-	return i.Email
-}
-
-func (i *InviteMembersResponseContent) GetRole() TeamMemberRoleEnum {
-	if i == nil {
-		return ""
-	}
-	return i.Role
-}
-
-func (i *InviteMembersResponseContent) GetTenantIDs() []TenantID {
-	if i == nil || i.TenantIDs == nil {
-		return nil
-	}
-	return i.TenantIDs
-}
-
-func (i *InviteMembersResponseContent) GetTenantRoles() []TenantMemberRoleEnum {
-	if i == nil || i.TenantRoles == nil {
-		return nil
-	}
-	return i.TenantRoles
-}
-
-func (i *InviteMembersResponseContent) GetClientIDs() []ClientID {
-	if i == nil || i.ClientIDs == nil {
-		return nil
-	}
-	return i.ClientIDs
-}
-
-func (i *InviteMembersResponseContent) GetExtraProperties() map[string]interface{} {
-	if i == nil {
-		return nil
-	}
-	return i.extraProperties
-}
-
-func (i *InviteMembersResponseContent) require(field *big.Int) {
-	if i.explicitFields == nil {
-		i.explicitFields = big.NewInt(0)
-	}
-	i.explicitFields.Or(i.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersResponseContent) SetID(id string) {
-	i.ID = id
-	i.require(inviteMembersResponseContentFieldID)
-}
-
-// SetEmail sets the Email field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersResponseContent) SetEmail(email string) {
-	i.Email = email
-	i.require(inviteMembersResponseContentFieldEmail)
-}
-
-// SetRole sets the Role field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersResponseContent) SetRole(role TeamMemberRoleEnum) {
-	i.Role = role
-	i.require(inviteMembersResponseContentFieldRole)
-}
-
-// SetTenantIDs sets the TenantIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersResponseContent) SetTenantIDs(tenantIDs []TenantID) {
-	i.TenantIDs = tenantIDs
-	i.require(inviteMembersResponseContentFieldTenantIDs)
-}
-
-// SetTenantRoles sets the TenantRoles field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersResponseContent) SetTenantRoles(tenantRoles []TenantMemberRoleEnum) {
-	i.TenantRoles = tenantRoles
-	i.require(inviteMembersResponseContentFieldTenantRoles)
-}
-
-// SetClientIDs sets the ClientIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersResponseContent) SetClientIDs(clientIDs []ClientID) {
-	i.ClientIDs = clientIDs
-	i.require(inviteMembersResponseContentFieldClientIDs)
-}
-
-func (i *InviteMembersResponseContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler InviteMembersResponseContent
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*i = InviteMembersResponseContent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *i)
-	if err != nil {
-		return err
-	}
-	i.extraProperties = extraProperties
-	i.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (i *InviteMembersResponseContent) MarshalJSON() ([]byte, error) {
-	type embed InviteMembersResponseContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*i),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (i *InviteMembersResponseContent) String() string {
-	if i == nil {
-		return "<nil>"
-	}
-	if len(i.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(i); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", i)
 }
 
 var (
@@ -467,7 +297,7 @@ func (l *ListMembersResponseContent) String() string {
 }
 
 var (
-	teamMemberFieldID         = big.NewInt(1 << 0)
+	teamMemberFieldMemberID   = big.NewInt(1 << 0)
 	teamMemberFieldName       = big.NewInt(1 << 1)
 	teamMemberFieldGivenName  = big.NewInt(1 << 2)
 	teamMemberFieldFamilyName = big.NewInt(1 << 3)
@@ -478,7 +308,7 @@ var (
 
 type TeamMember struct {
 	// The unique ID of the team member.
-	ID string `json:"id" url:"id"`
+	MemberID string `json:"member_id" url:"member_id"`
 	// The full name of the team member.
 	Name string `json:"name" url:"name"`
 	// The first name of the team member. Returns empty string if not set.
@@ -498,11 +328,11 @@ type TeamMember struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TeamMember) GetID() string {
+func (t *TeamMember) GetMemberID() string {
 	if t == nil {
 		return ""
 	}
-	return t.ID
+	return t.MemberID
 }
 
 func (t *TeamMember) GetName() string {
@@ -561,11 +391,11 @@ func (t *TeamMember) require(field *big.Int) {
 	t.explicitFields.Or(t.explicitFields, field)
 }
 
-// SetID sets the ID field and marks it as non-optional;
+// SetMemberID sets the MemberID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TeamMember) SetID(id string) {
-	t.ID = id
-	t.require(teamMemberFieldID)
+func (t *TeamMember) SetMemberID(memberID string) {
+	t.MemberID = memberID
+	t.require(teamMemberFieldMemberID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
@@ -679,191 +509,4 @@ func NewTeamMemberRoleEnumFromString(s string) (TeamMemberRoleEnum, error) {
 
 func (t TeamMemberRoleEnum) Ptr() *TeamMemberRoleEnum {
 	return &t
-}
-
-var (
-	updateMembersResponseContentFieldID         = big.NewInt(1 << 0)
-	updateMembersResponseContentFieldEmail      = big.NewInt(1 << 1)
-	updateMembersResponseContentFieldRole       = big.NewInt(1 << 2)
-	updateMembersResponseContentFieldName       = big.NewInt(1 << 3)
-	updateMembersResponseContentFieldGivenName  = big.NewInt(1 << 4)
-	updateMembersResponseContentFieldFamilyName = big.NewInt(1 << 5)
-	updateMembersResponseContentFieldNickname   = big.NewInt(1 << 6)
-)
-
-type UpdateMembersResponseContent struct {
-	// Unique ID of the team member.
-	ID string `json:"id" url:"id"`
-	// Email of the team member
-	Email string `json:"email" url:"email"`
-	// The team-level role of the team member.
-	Role TeamMemberRoleEnum `json:"role" url:"role"`
-	// Full name of the team member
-	Name string `json:"name" url:"name"`
-	// First name of the team member. Returns empty string if not set.
-	GivenName string `json:"given_name" url:"given_name"`
-	// Last name of the team member. Returns empty string if not set
-	FamilyName string `json:"family_name" url:"family_name"`
-	// Nickname of the team member. Returns empty string if not set.
-	Nickname string `json:"nickname" url:"nickname"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (u *UpdateMembersResponseContent) GetID() string {
-	if u == nil {
-		return ""
-	}
-	return u.ID
-}
-
-func (u *UpdateMembersResponseContent) GetEmail() string {
-	if u == nil {
-		return ""
-	}
-	return u.Email
-}
-
-func (u *UpdateMembersResponseContent) GetRole() TeamMemberRoleEnum {
-	if u == nil {
-		return ""
-	}
-	return u.Role
-}
-
-func (u *UpdateMembersResponseContent) GetName() string {
-	if u == nil {
-		return ""
-	}
-	return u.Name
-}
-
-func (u *UpdateMembersResponseContent) GetGivenName() string {
-	if u == nil {
-		return ""
-	}
-	return u.GivenName
-}
-
-func (u *UpdateMembersResponseContent) GetFamilyName() string {
-	if u == nil {
-		return ""
-	}
-	return u.FamilyName
-}
-
-func (u *UpdateMembersResponseContent) GetNickname() string {
-	if u == nil {
-		return ""
-	}
-	return u.Nickname
-}
-
-func (u *UpdateMembersResponseContent) GetExtraProperties() map[string]interface{} {
-	if u == nil {
-		return nil
-	}
-	return u.extraProperties
-}
-
-func (u *UpdateMembersResponseContent) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
-	}
-	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetID sets the ID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersResponseContent) SetID(id string) {
-	u.ID = id
-	u.require(updateMembersResponseContentFieldID)
-}
-
-// SetEmail sets the Email field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersResponseContent) SetEmail(email string) {
-	u.Email = email
-	u.require(updateMembersResponseContentFieldEmail)
-}
-
-// SetRole sets the Role field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersResponseContent) SetRole(role TeamMemberRoleEnum) {
-	u.Role = role
-	u.require(updateMembersResponseContentFieldRole)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersResponseContent) SetName(name string) {
-	u.Name = name
-	u.require(updateMembersResponseContentFieldName)
-}
-
-// SetGivenName sets the GivenName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersResponseContent) SetGivenName(givenName string) {
-	u.GivenName = givenName
-	u.require(updateMembersResponseContentFieldGivenName)
-}
-
-// SetFamilyName sets the FamilyName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersResponseContent) SetFamilyName(familyName string) {
-	u.FamilyName = familyName
-	u.require(updateMembersResponseContentFieldFamilyName)
-}
-
-// SetNickname sets the Nickname field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersResponseContent) SetNickname(nickname string) {
-	u.Nickname = nickname
-	u.require(updateMembersResponseContentFieldNickname)
-}
-
-func (u *UpdateMembersResponseContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateMembersResponseContent
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*u = UpdateMembersResponseContent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *u)
-	if err != nil {
-		return err
-	}
-	u.extraProperties = extraProperties
-	u.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (u *UpdateMembersResponseContent) MarshalJSON() ([]byte, error) {
-	type embed UpdateMembersResponseContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*u),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (u *UpdateMembersResponseContent) String() string {
-	if u == nil {
-		return "<nil>"
-	}
-	if len(u.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(u); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", u)
 }

@@ -75,70 +75,216 @@ func (c *CreateTenantsRequestContent) Accept(visitor CreateTenantsRequestContent
 	return fmt.Errorf("type %T does not include a non-empty union type", c)
 }
 
+var (
+	createTenantsResponseContentFieldTenantID         = big.NewInt(1 << 0)
+	createTenantsResponseContentFieldTenantName       = big.NewInt(1 << 1)
+	createTenantsResponseContentFieldDomain           = big.NewInt(1 << 2)
+	createTenantsResponseContentFieldEnvironmentTag   = big.NewInt(1 << 3)
+	createTenantsResponseContentFieldLocality         = big.NewInt(1 << 4)
+	createTenantsResponseContentFieldEnvironment      = big.NewInt(1 << 5)
+	createTenantsResponseContentFieldCreatedAt        = big.NewInt(1 << 6)
+	createTenantsResponseContentFieldManagementClient = big.NewInt(1 << 7)
+)
+
 type CreateTenantsResponseContent struct {
-	PublicCloudResponseContent  *PublicCloudResponseContent
-	PrivateCloudResponseContent *PrivateCloudResponseContent
+	// The unique identifier of the created tenant (UUID). This identifier is required for performing operations such as deleting the tenant. UUIDs ensure global uniqueness and are essential for managing tenant resources programmatically
+	TenantID         string               `json:"tenant_id" url:"tenant_id"`
+	TenantName       TenantName           `json:"tenant_name" url:"tenant_name"`
+	Domain           TenantFqdn           `json:"domain" url:"domain"`
+	EnvironmentTag   *EnvironmentTypeEnum `json:"environment_tag,omitempty" url:"environment_tag,omitempty"`
+	Locality         Region               `json:"locality" url:"locality"`
+	Environment      Environment          `json:"environment" url:"environment"`
+	CreatedAt        CreatedAt            `json:"created_at" url:"created_at"`
+	ManagementClient *ManagementClient    `json:"management_client" url:"management_client"`
 
-	typ string
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
-func (c *CreateTenantsResponseContent) GetPublicCloudResponseContent() *PublicCloudResponseContent {
+func (c *CreateTenantsResponseContent) GetTenantID() string {
+	if c == nil {
+		return ""
+	}
+	return c.TenantID
+}
+
+func (c *CreateTenantsResponseContent) GetTenantName() TenantName {
+	if c == nil {
+		return ""
+	}
+	return c.TenantName
+}
+
+func (c *CreateTenantsResponseContent) GetDomain() TenantFqdn {
+	if c == nil {
+		return ""
+	}
+	return c.Domain
+}
+
+func (c *CreateTenantsResponseContent) GetEnvironmentTag() EnvironmentTypeEnum {
+	if c == nil || c.EnvironmentTag == nil {
+		return ""
+	}
+	return *c.EnvironmentTag
+}
+
+func (c *CreateTenantsResponseContent) GetLocality() Region {
+	if c == nil {
+		return ""
+	}
+	return c.Locality
+}
+
+func (c *CreateTenantsResponseContent) GetEnvironment() Environment {
+	if c == nil {
+		return ""
+	}
+	return c.Environment
+}
+
+func (c *CreateTenantsResponseContent) GetCreatedAt() CreatedAt {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *CreateTenantsResponseContent) GetManagementClient() *ManagementClient {
 	if c == nil {
 		return nil
 	}
-	return c.PublicCloudResponseContent
+	return c.ManagementClient
 }
 
-func (c *CreateTenantsResponseContent) GetPrivateCloudResponseContent() *PrivateCloudResponseContent {
+func (c *CreateTenantsResponseContent) GetExtraProperties() map[string]interface{} {
 	if c == nil {
 		return nil
 	}
-	return c.PrivateCloudResponseContent
+	return c.extraProperties
+}
+
+func (c *CreateTenantsResponseContent) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetTenantID sets the TenantID field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateTenantsResponseContent) SetTenantID(tenantID string) {
+	c.TenantID = tenantID
+	c.require(createTenantsResponseContentFieldTenantID)
+}
+
+// SetTenantName sets the TenantName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateTenantsResponseContent) SetTenantName(tenantName TenantName) {
+	c.TenantName = tenantName
+	c.require(createTenantsResponseContentFieldTenantName)
+}
+
+// SetDomain sets the Domain field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateTenantsResponseContent) SetDomain(domain TenantFqdn) {
+	c.Domain = domain
+	c.require(createTenantsResponseContentFieldDomain)
+}
+
+// SetEnvironmentTag sets the EnvironmentTag field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateTenantsResponseContent) SetEnvironmentTag(environmentTag *EnvironmentTypeEnum) {
+	c.EnvironmentTag = environmentTag
+	c.require(createTenantsResponseContentFieldEnvironmentTag)
+}
+
+// SetLocality sets the Locality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateTenantsResponseContent) SetLocality(locality Region) {
+	c.Locality = locality
+	c.require(createTenantsResponseContentFieldLocality)
+}
+
+// SetEnvironment sets the Environment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateTenantsResponseContent) SetEnvironment(environment Environment) {
+	c.Environment = environment
+	c.require(createTenantsResponseContentFieldEnvironment)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateTenantsResponseContent) SetCreatedAt(createdAt CreatedAt) {
+	c.CreatedAt = createdAt
+	c.require(createTenantsResponseContentFieldCreatedAt)
+}
+
+// SetManagementClient sets the ManagementClient field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateTenantsResponseContent) SetManagementClient(managementClient *ManagementClient) {
+	c.ManagementClient = managementClient
+	c.require(createTenantsResponseContentFieldManagementClient)
 }
 
 func (c *CreateTenantsResponseContent) UnmarshalJSON(data []byte) error {
-	valuePublicCloudResponseContent := new(PublicCloudResponseContent)
-	if err := json.Unmarshal(data, &valuePublicCloudResponseContent); err == nil {
-		c.typ = "PublicCloudResponseContent"
-		c.PublicCloudResponseContent = valuePublicCloudResponseContent
-		return nil
+	type embed CreateTenantsResponseContent
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
+	}{
+		embed: embed(*c),
 	}
-	valuePrivateCloudResponseContent := new(PrivateCloudResponseContent)
-	if err := json.Unmarshal(data, &valuePrivateCloudResponseContent); err == nil {
-		c.typ = "PrivateCloudResponseContent"
-		c.PrivateCloudResponseContent = valuePrivateCloudResponseContent
-		return nil
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
 	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+	*c = CreateTenantsResponseContent(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
 }
 
-func (c CreateTenantsResponseContent) MarshalJSON() ([]byte, error) {
-	if c.typ == "PublicCloudResponseContent" || c.PublicCloudResponseContent != nil {
-		return json.Marshal(c.PublicCloudResponseContent)
+func (c *CreateTenantsResponseContent) MarshalJSON() ([]byte, error) {
+	type embed CreateTenantsResponseContent
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"created_at"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
 	}
-	if c.typ == "PrivateCloudResponseContent" || c.PrivateCloudResponseContent != nil {
-		return json.Marshal(c.PrivateCloudResponseContent)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
-type CreateTenantsResponseContentVisitor interface {
-	VisitPublicCloudResponseContent(*PublicCloudResponseContent) error
-	VisitPrivateCloudResponseContent(*PrivateCloudResponseContent) error
-}
-
-func (c *CreateTenantsResponseContent) Accept(visitor CreateTenantsResponseContentVisitor) error {
-	if c.typ == "PublicCloudResponseContent" || c.PublicCloudResponseContent != nil {
-		return visitor.VisitPublicCloudResponseContent(c.PublicCloudResponseContent)
+func (c *CreateTenantsResponseContent) String() string {
+	if c == nil {
+		return "<nil>"
 	}
-	if c.typ == "PrivateCloudResponseContent" || c.PrivateCloudResponseContent != nil {
-		return visitor.VisitPrivateCloudResponseContent(c.PrivateCloudResponseContent)
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
 	}
-	return fmt.Errorf("type %T does not include a non-empty union type", c)
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 // The date and time when the tenant was created, formatted in ISO 8601 standard. This timestamp ensures consistency across time zones and systems
 type CreatedAt = time.Time
+
+// The name of the cloud environment where the tenant was created
+type Environment = string
 
 // Specifies the Environment tag for the tenant created in the Auth0 Public Cloud. It is used to distinguish between development, staging and production environments.<br> Development and Staging environments are intended for testing and pre-production use, while production is designated for live applications and subject to higher rate limits. Selecting the correct environment type ensures appropriate resource allocation and rate limits
 type EnvironmentTypeEnum string
@@ -467,7 +613,7 @@ type ManagementClient struct {
 	// The id of the Machine to Machine client, which is used for secure, automated interactions with the tenant's APIs and services.
 	ClientID string `json:"client_id" url:"client_id"`
 	// The client secret the Machine to Machine client, which is used for secure, automated interactions with the tenant's APIs and services.
-	ClientSecret string `json:"client_secret" url:"client_secret"`
+	ClientSecret *string `json:"client_secret,omitempty" url:"client_secret,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -491,10 +637,10 @@ func (m *ManagementClient) GetClientID() string {
 }
 
 func (m *ManagementClient) GetClientSecret() string {
-	if m == nil {
+	if m == nil || m.ClientSecret == nil {
 		return ""
 	}
-	return m.ClientSecret
+	return *m.ClientSecret
 }
 
 func (m *ManagementClient) GetExtraProperties() map[string]interface{} {
@@ -527,7 +673,7 @@ func (m *ManagementClient) SetClientID(clientID string) {
 
 // SetClientSecret sets the ClientSecret field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ManagementClient) SetClientSecret(clientSecret string) {
+func (m *ManagementClient) SetClientSecret(clientSecret *string) {
 	m.ClientSecret = clientSecret
 	m.require(managementClientFieldClientSecret)
 }
@@ -694,179 +840,6 @@ func (p *PrivateCloudPayload) String() string {
 }
 
 var (
-	privateCloudResponseContentFieldTenantID         = big.NewInt(1 << 0)
-	privateCloudResponseContentFieldTenantName       = big.NewInt(1 << 1)
-	privateCloudResponseContentFieldDomain           = big.NewInt(1 << 2)
-	privateCloudResponseContentFieldEnvironment      = big.NewInt(1 << 3)
-	privateCloudResponseContentFieldCreatedAt        = big.NewInt(1 << 4)
-	privateCloudResponseContentFieldManagementClient = big.NewInt(1 << 5)
-)
-
-type PrivateCloudResponseContent struct {
-	// The unique identifier of the created tenant (UUID). This identifier is required for performing operations such as deleting the tenant. UUIDs ensure global uniqueness and are essential for managing tenant resources programmatically
-	TenantID         string            `json:"tenant_id" url:"tenant_id"`
-	TenantName       TenantName        `json:"tenant_name" url:"tenant_name"`
-	Domain           TenantFqdn        `json:"domain" url:"domain"`
-	Environment      Environment       `json:"environment" url:"environment"`
-	CreatedAt        CreatedAt         `json:"created_at" url:"created_at"`
-	ManagementClient *ManagementClient `json:"management_client" url:"management_client"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PrivateCloudResponseContent) GetTenantID() string {
-	if p == nil {
-		return ""
-	}
-	return p.TenantID
-}
-
-func (p *PrivateCloudResponseContent) GetTenantName() TenantName {
-	if p == nil {
-		return ""
-	}
-	return p.TenantName
-}
-
-func (p *PrivateCloudResponseContent) GetDomain() TenantFqdn {
-	if p == nil {
-		return ""
-	}
-	return p.Domain
-}
-
-func (p *PrivateCloudResponseContent) GetEnvironment() Environment {
-	if p == nil {
-		return ""
-	}
-	return p.Environment
-}
-
-func (p *PrivateCloudResponseContent) GetCreatedAt() CreatedAt {
-	if p == nil {
-		return time.Time{}
-	}
-	return p.CreatedAt
-}
-
-func (p *PrivateCloudResponseContent) GetManagementClient() *ManagementClient {
-	if p == nil {
-		return nil
-	}
-	return p.ManagementClient
-}
-
-func (p *PrivateCloudResponseContent) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PrivateCloudResponseContent) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetTenantID sets the TenantID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PrivateCloudResponseContent) SetTenantID(tenantID string) {
-	p.TenantID = tenantID
-	p.require(privateCloudResponseContentFieldTenantID)
-}
-
-// SetTenantName sets the TenantName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PrivateCloudResponseContent) SetTenantName(tenantName TenantName) {
-	p.TenantName = tenantName
-	p.require(privateCloudResponseContentFieldTenantName)
-}
-
-// SetDomain sets the Domain field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PrivateCloudResponseContent) SetDomain(domain TenantFqdn) {
-	p.Domain = domain
-	p.require(privateCloudResponseContentFieldDomain)
-}
-
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PrivateCloudResponseContent) SetEnvironment(environment Environment) {
-	p.Environment = environment
-	p.require(privateCloudResponseContentFieldEnvironment)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PrivateCloudResponseContent) SetCreatedAt(createdAt CreatedAt) {
-	p.CreatedAt = createdAt
-	p.require(privateCloudResponseContentFieldCreatedAt)
-}
-
-// SetManagementClient sets the ManagementClient field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PrivateCloudResponseContent) SetManagementClient(managementClient *ManagementClient) {
-	p.ManagementClient = managementClient
-	p.require(privateCloudResponseContentFieldManagementClient)
-}
-
-func (p *PrivateCloudResponseContent) UnmarshalJSON(data []byte) error {
-	type embed PrivateCloudResponseContent
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at"`
-	}{
-		embed: embed(*p),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*p = PrivateCloudResponseContent(unmarshaler.embed)
-	p.CreatedAt = unmarshaler.CreatedAt.Time()
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PrivateCloudResponseContent) MarshalJSON() ([]byte, error) {
-	type embed PrivateCloudResponseContent
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at"`
-	}{
-		embed:     embed(*p),
-		CreatedAt: internal.NewDateTime(p.CreatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PrivateCloudResponseContent) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
 	publicCloudPayloadFieldTenantName     = big.NewInt(1 << 0)
 	publicCloudPayloadFieldAdminEmail     = big.NewInt(1 << 1)
 	publicCloudPayloadFieldLocality       = big.NewInt(1 << 2)
@@ -1000,211 +973,6 @@ func (p *PublicCloudPayload) String() string {
 
 // Specifies the Auth0 Public Cloud locality where the tenant will be created.<br> Available localities include United States (us), Europe (eu), Australia (au), Japan (jp), Canada (ca) and United Kingdom (uk).
 type PublicCloudRegion = string
-
-var (
-	publicCloudResponseContentFieldTenantID         = big.NewInt(1 << 0)
-	publicCloudResponseContentFieldTenantName       = big.NewInt(1 << 1)
-	publicCloudResponseContentFieldDomain           = big.NewInt(1 << 2)
-	publicCloudResponseContentFieldEnvironmentTag   = big.NewInt(1 << 3)
-	publicCloudResponseContentFieldLocality         = big.NewInt(1 << 4)
-	publicCloudResponseContentFieldEnvironment      = big.NewInt(1 << 5)
-	publicCloudResponseContentFieldCreatedAt        = big.NewInt(1 << 6)
-	publicCloudResponseContentFieldManagementClient = big.NewInt(1 << 7)
-)
-
-type PublicCloudResponseContent struct {
-	// The unique identifier of the created tenant (UUID). This identifier is required for performing operations such as deleting the tenant. UUIDs ensure global uniqueness and are essential for managing tenant resources programmatically
-	TenantID         string               `json:"tenant_id" url:"tenant_id"`
-	TenantName       TenantName           `json:"tenant_name" url:"tenant_name"`
-	Domain           TenantFqdn           `json:"domain" url:"domain"`
-	EnvironmentTag   *EnvironmentTypeEnum `json:"environment_tag,omitempty" url:"environment_tag,omitempty"`
-	Locality         Region               `json:"locality" url:"locality"`
-	Environment      Environment          `json:"environment" url:"environment"`
-	CreatedAt        CreatedAt            `json:"created_at" url:"created_at"`
-	ManagementClient *ManagementClient    `json:"management_client" url:"management_client"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PublicCloudResponseContent) GetTenantID() string {
-	if p == nil {
-		return ""
-	}
-	return p.TenantID
-}
-
-func (p *PublicCloudResponseContent) GetTenantName() TenantName {
-	if p == nil {
-		return ""
-	}
-	return p.TenantName
-}
-
-func (p *PublicCloudResponseContent) GetDomain() TenantFqdn {
-	if p == nil {
-		return ""
-	}
-	return p.Domain
-}
-
-func (p *PublicCloudResponseContent) GetEnvironmentTag() EnvironmentTypeEnum {
-	if p == nil || p.EnvironmentTag == nil {
-		return ""
-	}
-	return *p.EnvironmentTag
-}
-
-func (p *PublicCloudResponseContent) GetLocality() Region {
-	if p == nil {
-		return ""
-	}
-	return p.Locality
-}
-
-func (p *PublicCloudResponseContent) GetEnvironment() Environment {
-	if p == nil {
-		return ""
-	}
-	return p.Environment
-}
-
-func (p *PublicCloudResponseContent) GetCreatedAt() CreatedAt {
-	if p == nil {
-		return time.Time{}
-	}
-	return p.CreatedAt
-}
-
-func (p *PublicCloudResponseContent) GetManagementClient() *ManagementClient {
-	if p == nil {
-		return nil
-	}
-	return p.ManagementClient
-}
-
-func (p *PublicCloudResponseContent) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PublicCloudResponseContent) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetTenantID sets the TenantID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PublicCloudResponseContent) SetTenantID(tenantID string) {
-	p.TenantID = tenantID
-	p.require(publicCloudResponseContentFieldTenantID)
-}
-
-// SetTenantName sets the TenantName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PublicCloudResponseContent) SetTenantName(tenantName TenantName) {
-	p.TenantName = tenantName
-	p.require(publicCloudResponseContentFieldTenantName)
-}
-
-// SetDomain sets the Domain field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PublicCloudResponseContent) SetDomain(domain TenantFqdn) {
-	p.Domain = domain
-	p.require(publicCloudResponseContentFieldDomain)
-}
-
-// SetEnvironmentTag sets the EnvironmentTag field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PublicCloudResponseContent) SetEnvironmentTag(environmentTag *EnvironmentTypeEnum) {
-	p.EnvironmentTag = environmentTag
-	p.require(publicCloudResponseContentFieldEnvironmentTag)
-}
-
-// SetLocality sets the Locality field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PublicCloudResponseContent) SetLocality(locality Region) {
-	p.Locality = locality
-	p.require(publicCloudResponseContentFieldLocality)
-}
-
-// SetEnvironment sets the Environment field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PublicCloudResponseContent) SetEnvironment(environment Environment) {
-	p.Environment = environment
-	p.require(publicCloudResponseContentFieldEnvironment)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PublicCloudResponseContent) SetCreatedAt(createdAt CreatedAt) {
-	p.CreatedAt = createdAt
-	p.require(publicCloudResponseContentFieldCreatedAt)
-}
-
-// SetManagementClient sets the ManagementClient field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PublicCloudResponseContent) SetManagementClient(managementClient *ManagementClient) {
-	p.ManagementClient = managementClient
-	p.require(publicCloudResponseContentFieldManagementClient)
-}
-
-func (p *PublicCloudResponseContent) UnmarshalJSON(data []byte) error {
-	type embed PublicCloudResponseContent
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at"`
-	}{
-		embed: embed(*p),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*p = PublicCloudResponseContent(unmarshaler.embed)
-	p.CreatedAt = unmarshaler.CreatedAt.Time()
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PublicCloudResponseContent) MarshalJSON() ([]byte, error) {
-	type embed PublicCloudResponseContent
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"created_at"`
-	}{
-		embed:     embed(*p),
-		CreatedAt: internal.NewDateTime(p.CreatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PublicCloudResponseContent) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
 
 // Locality in which the tenant was created
 type Region = string

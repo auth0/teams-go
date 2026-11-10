@@ -105,46 +105,7 @@ func TestMembersListWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestMembersListWithWireMock", "GET", "/api/members", map[string]interface{}{"take": "1", "from": "from"}, 1)
-}
-
-func TestMembersInviteWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewWithOptions(
-		option.WithBaseURL(WireMockBaseURL),
-		option.WithToken("test-token"),
-	)
-	request := &teams.InviteMembersRequestContent{
-		Email: "jane.smith@company.com",
-		Role:  teams.TeamMemberRoleEnumTeamsContributor,
-		TenantIDs: []teams.TenantID{
-			"538c9e21-e3d5-4ad6-b3d0-352c62369fb0",
-			"b1c9e21e-1234-4ad6-b3d0-352c6236abcd",
-		},
-		TenantRoles: []teams.TenantMemberRoleEnum{
-			teams.TenantMemberRoleEnumOwner,
-			teams.TenantMemberRoleEnumEditorUsers,
-		},
-		ClientIDs: []teams.ClientID{
-			"client_123",
-			"client_456",
-		},
-	}
-	_, invocationErr := client.Members.Invite(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestMembersInviteWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestMembersInviteWithWireMock", "POST", "/api/members", nil, 1)
+	VerifyRequestCount(t, "TestMembersListWithWireMock", "GET", "/api/v1/members", map[string]interface{}{"take": "1", "from": "from"}, 1)
 }
 
 func TestMembersGetWithWireMock(
@@ -160,62 +121,12 @@ func TestMembersGetWithWireMock(
 	)
 	_, invocationErr := client.Members.Get(
 		context.TODO(),
-		"id",
+		"member_id",
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestMembersGetWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestMembersGetWithWireMock", "GET", "/api/members/id", nil, 1)
-}
-
-func TestMembersDeleteWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewWithOptions(
-		option.WithBaseURL(WireMockBaseURL),
-		option.WithToken("test-token"),
-	)
-	invocationErr := client.Members.Delete(
-		context.TODO(),
-		"id",
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestMembersDeleteWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestMembersDeleteWithWireMock", "DELETE", "/api/members/id", nil, 1)
-}
-
-func TestMembersUpdateWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewWithOptions(
-		option.WithBaseURL(WireMockBaseURL),
-		option.WithToken("test-token"),
-	)
-	request := &teams.UpdateMembersRequestContent{
-		Role: teams.TeamMemberRoleEnumTeamsOwner,
-	}
-	_, invocationErr := client.Members.Update(
-		context.TODO(),
-		"id",
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestMembersUpdateWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestMembersUpdateWithWireMock", "PATCH", "/api/members/id", nil, 1)
+	VerifyRequestCount(t, "TestMembersGetWithWireMock", "GET", "/api/v1/members/member_id", nil, 1)
 }

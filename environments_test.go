@@ -12,7 +12,7 @@ import (
 func TestSettersListEnvironmentsResponseContent(t *testing.T) {
 	t.Run("SetEnvironments", func(t *testing.T) {
 		obj := &ListEnvironmentsResponseContent{}
-		var fernTestValueEnvironments []Environment
+		var fernTestValueEnvironments []HostEnvironment
 		obj.SetEnvironments(fernTestValueEnvironments)
 		assert.Equal(t, fernTestValueEnvironments, obj.Environments)
 		assert.NotNil(t, obj.explicitFields)
@@ -25,7 +25,7 @@ func TestGettersListEnvironmentsResponseContent(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ListEnvironmentsResponseContent{}
-		var expected []Environment
+		var expected []HostEnvironment
 		obj.Environments = expected
 
 		// Act & Assert
@@ -61,7 +61,7 @@ func TestSettersMarkExplicitListEnvironmentsResponseContent(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ListEnvironmentsResponseContent{}
-		var fernTestValueEnvironments []Environment
+		var fernTestValueEnvironments []HostEnvironment
 
 		// Act
 		obj.SetEnvironments(fernTestValueEnvironments)

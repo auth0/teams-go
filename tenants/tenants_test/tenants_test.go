@@ -105,6 +105,9 @@ func TestTenantsListWithWireMock(
 		Locality: teams.String(
 			"us",
 		),
+		TenantName: teams.String(
+			"acme-development-tenant",
+		),
 	}
 	_, invocationErr := client.Tenants.List(
 		context.TODO(),
@@ -115,7 +118,7 @@ func TestTenantsListWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTenantsListWithWireMock", "GET", "/api/tenants", map[string]interface{}{"take": "1", "from": "from", "sort": "sort", "environment": "US-3", "environment_tag": "development", "locality": "us"}, 1)
+	VerifyRequestCount(t, "TestTenantsListWithWireMock", "GET", "/api/v1/tenants", map[string]interface{}{"take": "1", "from": "from", "sort": "sort", "environment": "US-3", "environment_tag": "development", "locality": "us", "tenant_name": "acme-development-tenant"}, 1)
 }
 
 func TestTenantsCreateWithWireMock(
@@ -144,7 +147,7 @@ func TestTenantsCreateWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTenantsCreateWithWireMock", "POST", "/api/tenants", nil, 1)
+	VerifyRequestCount(t, "TestTenantsCreateWithWireMock", "POST", "/api/v1/tenants", nil, 1)
 }
 
 func TestTenantsGetWithWireMock(
@@ -167,7 +170,7 @@ func TestTenantsGetWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTenantsGetWithWireMock", "GET", "/api/tenants/tenantId", nil, 1)
+	VerifyRequestCount(t, "TestTenantsGetWithWireMock", "GET", "/api/v1/tenants/tenantId", nil, 1)
 }
 
 func TestTenantsDeleteWithWireMock(
@@ -190,5 +193,5 @@ func TestTenantsDeleteWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTenantsDeleteWithWireMock", "DELETE", "/api/tenants/tenantId", nil, 1)
+	VerifyRequestCount(t, "TestTenantsDeleteWithWireMock", "DELETE", "/api/v1/tenants/tenantId", nil, 1)
 }

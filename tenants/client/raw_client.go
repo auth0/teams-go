@@ -43,7 +43,7 @@ func (r *RawClient) Create(
 		r.baseURL,
 		"https://teamSlug.teams.auth0.com",
 	)
-	endpointURL := baseURL + "/api/tenants"
+	endpointURL := baseURL + "/api/v1/tenants"
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
@@ -88,7 +88,7 @@ func (r *RawClient) Get(
 		"https://teamSlug.teams.auth0.com",
 	)
 	endpointURL := internal.EncodeURL(
-		baseURL+"/api/tenants/%v",
+		baseURL+"/api/v1/tenants/%v",
 		tenantID,
 	)
 	headers := internal.MergeHeaders(
@@ -134,7 +134,7 @@ func (r *RawClient) Delete(
 		"https://teamSlug.teams.auth0.com",
 	)
 	endpointURL := internal.EncodeURL(
-		baseURL+"/api/tenants/%v",
+		baseURL+"/api/v1/tenants/%v",
 		tenantID,
 	)
 	headers := internal.MergeHeaders(
