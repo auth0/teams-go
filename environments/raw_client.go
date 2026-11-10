@@ -42,7 +42,7 @@ func (r *RawClient) List(
 		r.baseURL,
 		"https://teamSlug.teams.auth0.com",
 	)
-	endpointURL := baseURL + "/api/environments"
+	endpointURL := baseURL + "/api/v1/environments"
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),

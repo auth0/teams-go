@@ -276,398 +276,6 @@ func (c *ConflictErrorBody) String() string {
 }
 
 var (
-	createMembersTenantsResponseContentFieldStatusCode = big.NewInt(1 << 0)
-	createMembersTenantsResponseContentFieldMessage    = big.NewInt(1 << 1)
-	createMembersTenantsResponseContentFieldSummary    = big.NewInt(1 << 2)
-	createMembersTenantsResponseContentFieldSuccess    = big.NewInt(1 << 3)
-	createMembersTenantsResponseContentFieldFailure    = big.NewInt(1 << 4)
-)
-
-type CreateMembersTenantsResponseContent struct {
-	// Status code for partial response
-	StatusCode int `json:"status_code" url:"status_code"`
-	// Describing the partial error scenario
-	Message string                     `json:"message" url:"message"`
-	Summary *MembersTenantsBulkSummary `json:"summary" url:"summary"`
-	// List of successful instances
-	Success []*MembersTenantsSuccessItem `json:"success" url:"success"`
-	// List of failed instances
-	Failure []*MembersTenantsFailureItem `json:"failure" url:"failure"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateMembersTenantsResponseContent) GetStatusCode() int {
-	if c == nil {
-		return 0
-	}
-	return c.StatusCode
-}
-
-func (c *CreateMembersTenantsResponseContent) GetMessage() string {
-	if c == nil {
-		return ""
-	}
-	return c.Message
-}
-
-func (c *CreateMembersTenantsResponseContent) GetSummary() *MembersTenantsBulkSummary {
-	if c == nil {
-		return nil
-	}
-	return c.Summary
-}
-
-func (c *CreateMembersTenantsResponseContent) GetSuccess() []*MembersTenantsSuccessItem {
-	if c == nil {
-		return nil
-	}
-	return c.Success
-}
-
-func (c *CreateMembersTenantsResponseContent) GetFailure() []*MembersTenantsFailureItem {
-	if c == nil {
-		return nil
-	}
-	return c.Failure
-}
-
-func (c *CreateMembersTenantsResponseContent) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateMembersTenantsResponseContent) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetStatusCode sets the StatusCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateMembersTenantsResponseContent) SetStatusCode(statusCode int) {
-	c.StatusCode = statusCode
-	c.require(createMembersTenantsResponseContentFieldStatusCode)
-}
-
-// SetMessage sets the Message field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateMembersTenantsResponseContent) SetMessage(message string) {
-	c.Message = message
-	c.require(createMembersTenantsResponseContentFieldMessage)
-}
-
-// SetSummary sets the Summary field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateMembersTenantsResponseContent) SetSummary(summary *MembersTenantsBulkSummary) {
-	c.Summary = summary
-	c.require(createMembersTenantsResponseContentFieldSummary)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateMembersTenantsResponseContent) SetSuccess(success []*MembersTenantsSuccessItem) {
-	c.Success = success
-	c.require(createMembersTenantsResponseContentFieldSuccess)
-}
-
-// SetFailure sets the Failure field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateMembersTenantsResponseContent) SetFailure(failure []*MembersTenantsFailureItem) {
-	c.Failure = failure
-	c.require(createMembersTenantsResponseContentFieldFailure)
-}
-
-func (c *CreateMembersTenantsResponseContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateMembersTenantsResponseContent
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateMembersTenantsResponseContent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateMembersTenantsResponseContent) MarshalJSON() ([]byte, error) {
-	type embed CreateMembersTenantsResponseContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateMembersTenantsResponseContent) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	deleteMembersTenantsResponseContentFieldStatusCode = big.NewInt(1 << 0)
-	deleteMembersTenantsResponseContentFieldMessage    = big.NewInt(1 << 1)
-	deleteMembersTenantsResponseContentFieldSummary    = big.NewInt(1 << 2)
-	deleteMembersTenantsResponseContentFieldSuccess    = big.NewInt(1 << 3)
-	deleteMembersTenantsResponseContentFieldFailure    = big.NewInt(1 << 4)
-)
-
-type DeleteMembersTenantsResponseContent struct {
-	// Status code for partial response
-	StatusCode int `json:"status_code" url:"status_code"`
-	// Describing the partial error scenario
-	Message string                     `json:"message" url:"message"`
-	Summary *MembersTenantsBulkSummary `json:"summary" url:"summary"`
-	// List of all tenant ids that were removed
-	Success []*DeleteMembersTenantsSuccessItem `json:"success" url:"success"`
-	// List of failed instances
-	Failure []*MembersTenantsFailureItem `json:"failure" url:"failure"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (d *DeleteMembersTenantsResponseContent) GetStatusCode() int {
-	if d == nil {
-		return 0
-	}
-	return d.StatusCode
-}
-
-func (d *DeleteMembersTenantsResponseContent) GetMessage() string {
-	if d == nil {
-		return ""
-	}
-	return d.Message
-}
-
-func (d *DeleteMembersTenantsResponseContent) GetSummary() *MembersTenantsBulkSummary {
-	if d == nil {
-		return nil
-	}
-	return d.Summary
-}
-
-func (d *DeleteMembersTenantsResponseContent) GetSuccess() []*DeleteMembersTenantsSuccessItem {
-	if d == nil {
-		return nil
-	}
-	return d.Success
-}
-
-func (d *DeleteMembersTenantsResponseContent) GetFailure() []*MembersTenantsFailureItem {
-	if d == nil {
-		return nil
-	}
-	return d.Failure
-}
-
-func (d *DeleteMembersTenantsResponseContent) GetExtraProperties() map[string]interface{} {
-	if d == nil {
-		return nil
-	}
-	return d.extraProperties
-}
-
-func (d *DeleteMembersTenantsResponseContent) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetStatusCode sets the StatusCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteMembersTenantsResponseContent) SetStatusCode(statusCode int) {
-	d.StatusCode = statusCode
-	d.require(deleteMembersTenantsResponseContentFieldStatusCode)
-}
-
-// SetMessage sets the Message field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteMembersTenantsResponseContent) SetMessage(message string) {
-	d.Message = message
-	d.require(deleteMembersTenantsResponseContentFieldMessage)
-}
-
-// SetSummary sets the Summary field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteMembersTenantsResponseContent) SetSummary(summary *MembersTenantsBulkSummary) {
-	d.Summary = summary
-	d.require(deleteMembersTenantsResponseContentFieldSummary)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteMembersTenantsResponseContent) SetSuccess(success []*DeleteMembersTenantsSuccessItem) {
-	d.Success = success
-	d.require(deleteMembersTenantsResponseContentFieldSuccess)
-}
-
-// SetFailure sets the Failure field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteMembersTenantsResponseContent) SetFailure(failure []*MembersTenantsFailureItem) {
-	d.Failure = failure
-	d.require(deleteMembersTenantsResponseContentFieldFailure)
-}
-
-func (d *DeleteMembersTenantsResponseContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteMembersTenantsResponseContent
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteMembersTenantsResponseContent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteMembersTenantsResponseContent) MarshalJSON() ([]byte, error) {
-	type embed DeleteMembersTenantsResponseContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteMembersTenantsResponseContent) String() string {
-	if d == nil {
-		return "<nil>"
-	}
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	deleteMembersTenantsSuccessItemFieldTenantIDs = big.NewInt(1 << 0)
-)
-
-type DeleteMembersTenantsSuccessItem struct {
-	// IDs of successfully deleted tenants
-	TenantIDs []TenantID `json:"tenant_ids" url:"tenant_ids"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (d *DeleteMembersTenantsSuccessItem) GetTenantIDs() []TenantID {
-	if d == nil {
-		return nil
-	}
-	return d.TenantIDs
-}
-
-func (d *DeleteMembersTenantsSuccessItem) GetExtraProperties() map[string]interface{} {
-	if d == nil {
-		return nil
-	}
-	return d.extraProperties
-}
-
-func (d *DeleteMembersTenantsSuccessItem) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetTenantIDs sets the TenantIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteMembersTenantsSuccessItem) SetTenantIDs(tenantIDs []TenantID) {
-	d.TenantIDs = tenantIDs
-	d.require(deleteMembersTenantsSuccessItemFieldTenantIDs)
-}
-
-func (d *DeleteMembersTenantsSuccessItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteMembersTenantsSuccessItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteMembersTenantsSuccessItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteMembersTenantsSuccessItem) MarshalJSON() ([]byte, error) {
-	type embed DeleteMembersTenantsSuccessItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteMembersTenantsSuccessItem) String() string {
-	if d == nil {
-		return "<nil>"
-	}
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-// The name of the cloud environment where the tenant was created
-type Environment = string
-
-var (
 	forbiddenErrorBodyFieldStatus  = big.NewInt(1 << 0)
 	forbiddenErrorBodyFieldType    = big.NewInt(1 << 1)
 	forbiddenErrorBodyFieldTitle   = big.NewInt(1 << 2)
@@ -798,6 +406,9 @@ func (f *ForbiddenErrorBody) String() string {
 	}
 	return fmt.Sprintf("%#v", f)
 }
+
+// The name of the cloud environment where the tenant was created
+type HostEnvironment = string
 
 var (
 	internalServerErrorBodyFieldStatus  = big.NewInt(1 << 0)
@@ -937,8 +548,7 @@ var (
 )
 
 type ListMembersTenantsResponseContent struct {
-	// The queried environment.
-	Environment string `json:"environment" url:"environment"`
+	Environment HostEnvironment `json:"environment" url:"environment"`
 	// Member tenant access list
 	Tenants []*MemberTenantItem `json:"tenants" url:"tenants"`
 
@@ -949,7 +559,7 @@ type ListMembersTenantsResponseContent struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListMembersTenantsResponseContent) GetEnvironment() string {
+func (l *ListMembersTenantsResponseContent) GetEnvironment() HostEnvironment {
 	if l == nil {
 		return ""
 	}
@@ -979,7 +589,7 @@ func (l *ListMembersTenantsResponseContent) require(field *big.Int) {
 
 // SetEnvironment sets the Environment field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListMembersTenantsResponseContent) SetEnvironment(environment string) {
+func (l *ListMembersTenantsResponseContent) SetEnvironment(environment HostEnvironment) {
 	l.Environment = environment
 	l.require(listMembersTenantsResponseContentFieldEnvironment)
 }
@@ -1250,379 +860,6 @@ func (m *MemberTenantItem) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
-// Summary of the bulk tenant operation
-var (
-	membersTenantsBulkSummaryFieldTotalCount   = big.NewInt(1 << 0)
-	membersTenantsBulkSummaryFieldSuccessCount = big.NewInt(1 << 1)
-	membersTenantsBulkSummaryFieldFailureCount = big.NewInt(1 << 2)
-)
-
-type MembersTenantsBulkSummary struct {
-	// Total number of tenants submitted
-	TotalCount int `json:"total_count" url:"total_count"`
-	// Number of tenants successfully processed
-	SuccessCount int `json:"success_count" url:"success_count"`
-	// Number of tenants that could not be processed
-	FailureCount int `json:"failure_count" url:"failure_count"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *MembersTenantsBulkSummary) GetTotalCount() int {
-	if m == nil {
-		return 0
-	}
-	return m.TotalCount
-}
-
-func (m *MembersTenantsBulkSummary) GetSuccessCount() int {
-	if m == nil {
-		return 0
-	}
-	return m.SuccessCount
-}
-
-func (m *MembersTenantsBulkSummary) GetFailureCount() int {
-	if m == nil {
-		return 0
-	}
-	return m.FailureCount
-}
-
-func (m *MembersTenantsBulkSummary) GetExtraProperties() map[string]interface{} {
-	if m == nil {
-		return nil
-	}
-	return m.extraProperties
-}
-
-func (m *MembersTenantsBulkSummary) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetTotalCount sets the TotalCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsBulkSummary) SetTotalCount(totalCount int) {
-	m.TotalCount = totalCount
-	m.require(membersTenantsBulkSummaryFieldTotalCount)
-}
-
-// SetSuccessCount sets the SuccessCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsBulkSummary) SetSuccessCount(successCount int) {
-	m.SuccessCount = successCount
-	m.require(membersTenantsBulkSummaryFieldSuccessCount)
-}
-
-// SetFailureCount sets the FailureCount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsBulkSummary) SetFailureCount(failureCount int) {
-	m.FailureCount = failureCount
-	m.require(membersTenantsBulkSummaryFieldFailureCount)
-}
-
-func (m *MembersTenantsBulkSummary) UnmarshalJSON(data []byte) error {
-	type unmarshaler MembersTenantsBulkSummary
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = MembersTenantsBulkSummary(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *MembersTenantsBulkSummary) MarshalJSON() ([]byte, error) {
-	type embed MembersTenantsBulkSummary
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*m),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (m *MembersTenantsBulkSummary) String() string {
-	if m == nil {
-		return "<nil>"
-	}
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-var (
-	membersTenantsFailureItemFieldTenantID = big.NewInt(1 << 0)
-	membersTenantsFailureItemFieldStatus   = big.NewInt(1 << 1)
-	membersTenantsFailureItemFieldTitle    = big.NewInt(1 << 2)
-	membersTenantsFailureItemFieldType     = big.NewInt(1 << 3)
-)
-
-type MembersTenantsFailureItem struct {
-	TenantID TenantID `json:"tenant_id" url:"tenant_id"`
-	// Status code of failure
-	Status int `json:"status" url:"status"`
-	// A short human-readable summary of the error
-	Title string `json:"title" url:"title"`
-	// A specific error code (e.g., VALIDATION_ERROR, UNAUTHORIZED, TENANT_LIMIT_REACHED)
-	Type string `json:"type" url:"type"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *MembersTenantsFailureItem) GetTenantID() TenantID {
-	if m == nil {
-		return ""
-	}
-	return m.TenantID
-}
-
-func (m *MembersTenantsFailureItem) GetStatus() int {
-	if m == nil {
-		return 0
-	}
-	return m.Status
-}
-
-func (m *MembersTenantsFailureItem) GetTitle() string {
-	if m == nil {
-		return ""
-	}
-	return m.Title
-}
-
-func (m *MembersTenantsFailureItem) GetType() string {
-	if m == nil {
-		return ""
-	}
-	return m.Type
-}
-
-func (m *MembersTenantsFailureItem) GetExtraProperties() map[string]interface{} {
-	if m == nil {
-		return nil
-	}
-	return m.extraProperties
-}
-
-func (m *MembersTenantsFailureItem) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetTenantID sets the TenantID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsFailureItem) SetTenantID(tenantID TenantID) {
-	m.TenantID = tenantID
-	m.require(membersTenantsFailureItemFieldTenantID)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsFailureItem) SetStatus(status int) {
-	m.Status = status
-	m.require(membersTenantsFailureItemFieldStatus)
-}
-
-// SetTitle sets the Title field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsFailureItem) SetTitle(title string) {
-	m.Title = title
-	m.require(membersTenantsFailureItemFieldTitle)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsFailureItem) SetType(type_ string) {
-	m.Type = type_
-	m.require(membersTenantsFailureItemFieldType)
-}
-
-func (m *MembersTenantsFailureItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler MembersTenantsFailureItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = MembersTenantsFailureItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *MembersTenantsFailureItem) MarshalJSON() ([]byte, error) {
-	type embed MembersTenantsFailureItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*m),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (m *MembersTenantsFailureItem) String() string {
-	if m == nil {
-		return "<nil>"
-	}
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
-var (
-	membersTenantsSuccessItemFieldTenantID  = big.NewInt(1 << 0)
-	membersTenantsSuccessItemFieldRoles     = big.NewInt(1 << 1)
-	membersTenantsSuccessItemFieldClientIDs = big.NewInt(1 << 2)
-)
-
-type MembersTenantsSuccessItem struct {
-	TenantID TenantID `json:"tenant_id" url:"tenant_id"`
-	// List of roles assigned to the tenant member
-	Roles []TenantMemberRoleEnum `json:"roles" url:"roles"`
-	// Only if nested role is editor-specific-app
-	ClientIDs []ClientID `json:"client_ids,omitempty" url:"client_ids,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *MembersTenantsSuccessItem) GetTenantID() TenantID {
-	if m == nil {
-		return ""
-	}
-	return m.TenantID
-}
-
-func (m *MembersTenantsSuccessItem) GetRoles() []TenantMemberRoleEnum {
-	if m == nil {
-		return nil
-	}
-	return m.Roles
-}
-
-func (m *MembersTenantsSuccessItem) GetClientIDs() []ClientID {
-	if m == nil || m.ClientIDs == nil {
-		return nil
-	}
-	return m.ClientIDs
-}
-
-func (m *MembersTenantsSuccessItem) GetExtraProperties() map[string]interface{} {
-	if m == nil {
-		return nil
-	}
-	return m.extraProperties
-}
-
-func (m *MembersTenantsSuccessItem) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetTenantID sets the TenantID field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsSuccessItem) SetTenantID(tenantID TenantID) {
-	m.TenantID = tenantID
-	m.require(membersTenantsSuccessItemFieldTenantID)
-}
-
-// SetRoles sets the Roles field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsSuccessItem) SetRoles(roles []TenantMemberRoleEnum) {
-	m.Roles = roles
-	m.require(membersTenantsSuccessItemFieldRoles)
-}
-
-// SetClientIDs sets the ClientIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MembersTenantsSuccessItem) SetClientIDs(clientIDs []ClientID) {
-	m.ClientIDs = clientIDs
-	m.require(membersTenantsSuccessItemFieldClientIDs)
-}
-
-func (m *MembersTenantsSuccessItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler MembersTenantsSuccessItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = MembersTenantsSuccessItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *MembersTenantsSuccessItem) MarshalJSON() ([]byte, error) {
-	type embed MembersTenantsSuccessItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*m),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (m *MembersTenantsSuccessItem) String() string {
-	if m == nil {
-		return "<nil>"
-	}
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
 // Opaque cursor for next page; not sent if no more results
 type Next = string
 
@@ -1758,6 +995,138 @@ func (n *NotFoundErrorBody) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
+var (
+	serviceUnavailableErrorBodyFieldStatus  = big.NewInt(1 << 0)
+	serviceUnavailableErrorBodyFieldType    = big.NewInt(1 << 1)
+	serviceUnavailableErrorBodyFieldTitle   = big.NewInt(1 << 2)
+	serviceUnavailableErrorBodyFieldDetails = big.NewInt(1 << 3)
+)
+
+type ServiceUnavailableErrorBody struct {
+	Status  string  `json:"status" url:"status"`
+	Type    string  `json:"type" url:"type"`
+	Title   string  `json:"title" url:"title"`
+	Details *string `json:"details,omitempty" url:"details,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *ServiceUnavailableErrorBody) GetStatus() string {
+	if s == nil {
+		return ""
+	}
+	return s.Status
+}
+
+func (s *ServiceUnavailableErrorBody) GetType() string {
+	if s == nil {
+		return ""
+	}
+	return s.Type
+}
+
+func (s *ServiceUnavailableErrorBody) GetTitle() string {
+	if s == nil {
+		return ""
+	}
+	return s.Title
+}
+
+func (s *ServiceUnavailableErrorBody) GetDetails() string {
+	if s == nil || s.Details == nil {
+		return ""
+	}
+	return *s.Details
+}
+
+func (s *ServiceUnavailableErrorBody) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *ServiceUnavailableErrorBody) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceUnavailableErrorBody) SetStatus(status string) {
+	s.Status = status
+	s.require(serviceUnavailableErrorBodyFieldStatus)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceUnavailableErrorBody) SetType(type_ string) {
+	s.Type = type_
+	s.require(serviceUnavailableErrorBodyFieldType)
+}
+
+// SetTitle sets the Title field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceUnavailableErrorBody) SetTitle(title string) {
+	s.Title = title
+	s.require(serviceUnavailableErrorBodyFieldTitle)
+}
+
+// SetDetails sets the Details field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceUnavailableErrorBody) SetDetails(details *string) {
+	s.Details = details
+	s.require(serviceUnavailableErrorBodyFieldDetails)
+}
+
+func (s *ServiceUnavailableErrorBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler ServiceUnavailableErrorBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ServiceUnavailableErrorBody(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ServiceUnavailableErrorBody) MarshalJSON() ([]byte, error) {
+	type embed ServiceUnavailableErrorBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *ServiceUnavailableErrorBody) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 // The fully qualified domain name of the tenant, which uniquely identifies its domain within the system. The domain is used to define the audience when interacting with the Management API, enabling programmatic management of the tenant’s configuration and resources.
 type TenantFqdn = string
 
@@ -1765,7 +1134,7 @@ type TenantFqdn = string
 type TenantID = string
 
 var (
-	tenantMemberFieldID         = big.NewInt(1 << 0)
+	tenantMemberFieldMemberID   = big.NewInt(1 << 0)
 	tenantMemberFieldName       = big.NewInt(1 << 1)
 	tenantMemberFieldEmail      = big.NewInt(1 << 2)
 	tenantMemberFieldRoles      = big.NewInt(1 << 3)
@@ -1776,7 +1145,7 @@ var (
 
 type TenantMember struct {
 	// Unique ID of the tenant member
-	ID string `json:"id" url:"id"`
+	MemberID string `json:"member_id" url:"member_id"`
 	// Full name of the member.
 	Name string `json:"name" url:"name"`
 	// Email of the member.
@@ -1797,11 +1166,11 @@ type TenantMember struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TenantMember) GetID() string {
+func (t *TenantMember) GetMemberID() string {
 	if t == nil {
 		return ""
 	}
-	return t.ID
+	return t.MemberID
 }
 
 func (t *TenantMember) GetName() string {
@@ -1860,11 +1229,11 @@ func (t *TenantMember) require(field *big.Int) {
 	t.explicitFields.Or(t.explicitFields, field)
 }
 
-// SetID sets the ID field and marks it as non-optional;
+// SetMemberID sets the MemberID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TenantMember) SetID(id string) {
-	t.ID = id
-	t.require(tenantMemberFieldID)
+func (t *TenantMember) SetMemberID(memberID string) {
+	t.MemberID = memberID
+	t.require(tenantMemberFieldMemberID)
 }
 
 // SetName sets the Name field and marks it as non-optional;
@@ -2350,158 +1719,6 @@ func (u *UnauthorizedErrorBody) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UnauthorizedErrorBody) String() string {
-	if u == nil {
-		return "<nil>"
-	}
-	if len(u.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(u); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", u)
-}
-
-var (
-	updateMembersTenantsResponseContentFieldStatusCode = big.NewInt(1 << 0)
-	updateMembersTenantsResponseContentFieldMessage    = big.NewInt(1 << 1)
-	updateMembersTenantsResponseContentFieldSummary    = big.NewInt(1 << 2)
-	updateMembersTenantsResponseContentFieldSuccess    = big.NewInt(1 << 3)
-	updateMembersTenantsResponseContentFieldFailure    = big.NewInt(1 << 4)
-)
-
-type UpdateMembersTenantsResponseContent struct {
-	// Status code for partial response
-	StatusCode int `json:"status_code" url:"status_code"`
-	// Describing the partial error scenario
-	Message string                     `json:"message" url:"message"`
-	Summary *MembersTenantsBulkSummary `json:"summary" url:"summary"`
-	// List of successful instances
-	Success []*MembersTenantsSuccessItem `json:"success" url:"success"`
-	// List of failed instances
-	Failure []*MembersTenantsFailureItem `json:"failure" url:"failure"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (u *UpdateMembersTenantsResponseContent) GetStatusCode() int {
-	if u == nil {
-		return 0
-	}
-	return u.StatusCode
-}
-
-func (u *UpdateMembersTenantsResponseContent) GetMessage() string {
-	if u == nil {
-		return ""
-	}
-	return u.Message
-}
-
-func (u *UpdateMembersTenantsResponseContent) GetSummary() *MembersTenantsBulkSummary {
-	if u == nil {
-		return nil
-	}
-	return u.Summary
-}
-
-func (u *UpdateMembersTenantsResponseContent) GetSuccess() []*MembersTenantsSuccessItem {
-	if u == nil {
-		return nil
-	}
-	return u.Success
-}
-
-func (u *UpdateMembersTenantsResponseContent) GetFailure() []*MembersTenantsFailureItem {
-	if u == nil {
-		return nil
-	}
-	return u.Failure
-}
-
-func (u *UpdateMembersTenantsResponseContent) GetExtraProperties() map[string]interface{} {
-	if u == nil {
-		return nil
-	}
-	return u.extraProperties
-}
-
-func (u *UpdateMembersTenantsResponseContent) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
-	}
-	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetStatusCode sets the StatusCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersTenantsResponseContent) SetStatusCode(statusCode int) {
-	u.StatusCode = statusCode
-	u.require(updateMembersTenantsResponseContentFieldStatusCode)
-}
-
-// SetMessage sets the Message field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersTenantsResponseContent) SetMessage(message string) {
-	u.Message = message
-	u.require(updateMembersTenantsResponseContentFieldMessage)
-}
-
-// SetSummary sets the Summary field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersTenantsResponseContent) SetSummary(summary *MembersTenantsBulkSummary) {
-	u.Summary = summary
-	u.require(updateMembersTenantsResponseContentFieldSummary)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersTenantsResponseContent) SetSuccess(success []*MembersTenantsSuccessItem) {
-	u.Success = success
-	u.require(updateMembersTenantsResponseContentFieldSuccess)
-}
-
-// SetFailure sets the Failure field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersTenantsResponseContent) SetFailure(failure []*MembersTenantsFailureItem) {
-	u.Failure = failure
-	u.require(updateMembersTenantsResponseContentFieldFailure)
-}
-
-func (u *UpdateMembersTenantsResponseContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateMembersTenantsResponseContent
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*u = UpdateMembersTenantsResponseContent(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *u)
-	if err != nil {
-		return err
-	}
-	u.extraProperties = extraProperties
-	u.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (u *UpdateMembersTenantsResponseContent) MarshalJSON() ([]byte, error) {
-	type embed UpdateMembersTenantsResponseContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*u),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (u *UpdateMembersTenantsResponseContent) String() string {
 	if u == nil {
 		return "<nil>"
 	}

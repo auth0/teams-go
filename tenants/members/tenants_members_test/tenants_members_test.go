@@ -106,5 +106,5 @@ func TestTenantsMembersListWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTenantsMembersListWithWireMock", "GET", "/api/tenants/tenantId/members", map[string]interface{}{"take": "1", "from": "from"}, 1)
+	VerifyRequestCount(t, "TestTenantsMembersListWithWireMock", "GET", "/api/v1/tenants/tenantId/members", map[string]interface{}{"take": "1", "from": "from"}, 1)
 }

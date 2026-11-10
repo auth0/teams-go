@@ -3,239 +3,8 @@
 package teams
 
 import (
-	json "encoding/json"
-	internal "github.com/auth0/teams-go/internal"
 	big "math/big"
 )
-
-var (
-	createMembersTenantsRequestContentFieldTenants   = big.NewInt(1 << 0)
-	createMembersTenantsRequestContentFieldRoles     = big.NewInt(1 << 1)
-	createMembersTenantsRequestContentFieldClientIDs = big.NewInt(1 << 2)
-)
-
-type CreateMembersTenantsRequestContent struct {
-	// A list of tenant ids
-	Tenants []TenantID `json:"tenants" url:"-"`
-	// List of roles to be assigned to the tenant member
-	Roles []TenantMemberRoleEnum `json:"roles" url:"-"`
-	// List of applications. Only if nested role is editor-specific-app
-	ClientIDs []ClientID `json:"client_ids,omitempty" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (c *CreateMembersTenantsRequestContent) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetTenants sets the Tenants field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateMembersTenantsRequestContent) SetTenants(tenants []TenantID) {
-	c.Tenants = tenants
-	c.require(createMembersTenantsRequestContentFieldTenants)
-}
-
-// SetRoles sets the Roles field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateMembersTenantsRequestContent) SetRoles(roles []TenantMemberRoleEnum) {
-	c.Roles = roles
-	c.require(createMembersTenantsRequestContentFieldRoles)
-}
-
-// SetClientIDs sets the ClientIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateMembersTenantsRequestContent) SetClientIDs(clientIDs []ClientID) {
-	c.ClientIDs = clientIDs
-	c.require(createMembersTenantsRequestContentFieldClientIDs)
-}
-
-func (c *CreateMembersTenantsRequestContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateMembersTenantsRequestContent
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*c = CreateMembersTenantsRequestContent(body)
-	return nil
-}
-
-func (c *CreateMembersTenantsRequestContent) MarshalJSON() ([]byte, error) {
-	type embed CreateMembersTenantsRequestContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-var (
-	inviteMembersRequestContentFieldEmail       = big.NewInt(1 << 0)
-	inviteMembersRequestContentFieldRole        = big.NewInt(1 << 1)
-	inviteMembersRequestContentFieldTenantIDs   = big.NewInt(1 << 2)
-	inviteMembersRequestContentFieldTenantRoles = big.NewInt(1 << 3)
-	inviteMembersRequestContentFieldClientIDs   = big.NewInt(1 << 4)
-)
-
-type InviteMembersRequestContent struct {
-	// The email of the team member
-	Email string             `json:"email" url:"-"`
-	Role  TeamMemberRoleEnum `json:"role" url:"-"`
-	// Specifies an optional list of tenant IDs and their corresponding role assignments.
-	TenantIDs []TenantID `json:"tenant_ids,omitempty" url:"-"`
-	// The list of roles for each tenant.
-	TenantRoles []TenantMemberRoleEnum `json:"tenant_roles,omitempty" url:"-"`
-	// The list of apps the user has access to for the 'editor-specific-apps' role. This property is only present for this role.
-	ClientIDs []ClientID `json:"client_ids,omitempty" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (i *InviteMembersRequestContent) require(field *big.Int) {
-	if i.explicitFields == nil {
-		i.explicitFields = big.NewInt(0)
-	}
-	i.explicitFields.Or(i.explicitFields, field)
-}
-
-// SetEmail sets the Email field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersRequestContent) SetEmail(email string) {
-	i.Email = email
-	i.require(inviteMembersRequestContentFieldEmail)
-}
-
-// SetRole sets the Role field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersRequestContent) SetRole(role TeamMemberRoleEnum) {
-	i.Role = role
-	i.require(inviteMembersRequestContentFieldRole)
-}
-
-// SetTenantIDs sets the TenantIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersRequestContent) SetTenantIDs(tenantIDs []TenantID) {
-	i.TenantIDs = tenantIDs
-	i.require(inviteMembersRequestContentFieldTenantIDs)
-}
-
-// SetTenantRoles sets the TenantRoles field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersRequestContent) SetTenantRoles(tenantRoles []TenantMemberRoleEnum) {
-	i.TenantRoles = tenantRoles
-	i.require(inviteMembersRequestContentFieldTenantRoles)
-}
-
-// SetClientIDs sets the ClientIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InviteMembersRequestContent) SetClientIDs(clientIDs []ClientID) {
-	i.ClientIDs = clientIDs
-	i.require(inviteMembersRequestContentFieldClientIDs)
-}
-
-func (i *InviteMembersRequestContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler InviteMembersRequestContent
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*i = InviteMembersRequestContent(body)
-	return nil
-}
-
-func (i *InviteMembersRequestContent) MarshalJSON() ([]byte, error) {
-	type embed InviteMembersRequestContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*i),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-var (
-	listActivityRequestParametersFieldTake   = big.NewInt(1 << 0)
-	listActivityRequestParametersFieldFrom   = big.NewInt(1 << 1)
-	listActivityRequestParametersFieldSince  = big.NewInt(1 << 2)
-	listActivityRequestParametersFieldUntil  = big.NewInt(1 << 3)
-	listActivityRequestParametersFieldType   = big.NewInt(1 << 4)
-	listActivityRequestParametersFieldStatus = big.NewInt(1 << 5)
-)
-
-type ListActivityRequestParameters struct {
-	// Maximum number of items to return per page. Defaults to 50. Maximum 50
-	Take *int `json:"-" url:"take,omitempty"`
-	// Checkpoint cursor for pagination; use the 'next' value from a previous response to fetch the next page
-	From *string `json:"-" url:"from,omitempty"`
-	// Return logs created at or after this ISO 8601 date format
-	Since *DateTimeIso `json:"-" url:"since,omitempty"`
-	// Return logs created before this ISO 8601 timestamp
-	Until *DateTimeIso `json:"-" url:"until,omitempty"`
-	// Exact match: filter by event type
-	Type *ActivityLogEventTypeEnum `json:"-" url:"type,omitempty"`
-	// Exact match: filter by status
-	Status *ActivityLogStatusEnum `json:"-" url:"status,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (l *ListActivityRequestParameters) require(field *big.Int) {
-	if l.explicitFields == nil {
-		l.explicitFields = big.NewInt(0)
-	}
-	l.explicitFields.Or(l.explicitFields, field)
-}
-
-// SetTake sets the Take field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListActivityRequestParameters) SetTake(take *int) {
-	l.Take = take
-	l.require(listActivityRequestParametersFieldTake)
-}
-
-// SetFrom sets the From field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListActivityRequestParameters) SetFrom(from *string) {
-	l.From = from
-	l.require(listActivityRequestParametersFieldFrom)
-}
-
-// SetSince sets the Since field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListActivityRequestParameters) SetSince(since *DateTimeIso) {
-	l.Since = since
-	l.require(listActivityRequestParametersFieldSince)
-}
-
-// SetUntil sets the Until field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListActivityRequestParameters) SetUntil(until *DateTimeIso) {
-	l.Until = until
-	l.require(listActivityRequestParametersFieldUntil)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListActivityRequestParameters) SetType(type_ *ActivityLogEventTypeEnum) {
-	l.Type = type_
-	l.require(listActivityRequestParametersFieldType)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListActivityRequestParameters) SetStatus(status *ActivityLogStatusEnum) {
-	l.Status = status
-	l.require(listActivityRequestParametersFieldStatus)
-}
 
 var (
 	listMembersRequestParametersFieldTake = big.NewInt(1 << 0)
@@ -280,6 +49,7 @@ var (
 	listTenantsRequestParametersFieldEnvironment    = big.NewInt(1 << 3)
 	listTenantsRequestParametersFieldEnvironmentTag = big.NewInt(1 << 4)
 	listTenantsRequestParametersFieldLocality       = big.NewInt(1 << 5)
+	listTenantsRequestParametersFieldTenantName     = big.NewInt(1 << 6)
 )
 
 type ListTenantsRequestParameters struct {
@@ -295,6 +65,8 @@ type ListTenantsRequestParameters struct {
 	EnvironmentTag *EnvironmentTypeEnum `json:"-" url:"environment_tag,omitempty"`
 	// Filter tenants by locality. For public cloud tenants, matches locality (e.g., 'us', 'eu'). For private cloud tenants, matches the space's primary locality (e.g., 'virginia', 'frankfurt').
 	Locality *string `json:"-" url:"locality,omitempty"`
+	// Filter tenants by name prefix (case-sensitive).
+	TenantName *TenantName `json:"-" url:"tenant_name,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -349,6 +121,13 @@ func (l *ListTenantsRequestParameters) SetLocality(locality *string) {
 	l.require(listTenantsRequestParametersFieldLocality)
 }
 
+// SetTenantName sets the TenantName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTenantsRequestParameters) SetTenantName(tenantName *TenantName) {
+	l.TenantName = tenantName
+	l.require(listTenantsRequestParametersFieldTenantName)
+}
+
 var (
 	listTenantsMembersRequestParametersFieldTake = big.NewInt(1 << 0)
 	listTenantsMembersRequestParametersFieldFrom = big.NewInt(1 << 1)
@@ -383,165 +162,4 @@ func (l *ListTenantsMembersRequestParameters) SetTake(take *int) {
 func (l *ListTenantsMembersRequestParameters) SetFrom(from *string) {
 	l.From = from
 	l.require(listTenantsMembersRequestParametersFieldFrom)
-}
-
-var (
-	deleteMembersTenantsRequestContentFieldTenants = big.NewInt(1 << 0)
-)
-
-type DeleteMembersTenantsRequestContent struct {
-	// Specifies list of tenant IDs to be removed
-	Tenants []TenantID `json:"tenants" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (d *DeleteMembersTenantsRequestContent) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetTenants sets the Tenants field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteMembersTenantsRequestContent) SetTenants(tenants []TenantID) {
-	d.Tenants = tenants
-	d.require(deleteMembersTenantsRequestContentFieldTenants)
-}
-
-func (d *DeleteMembersTenantsRequestContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteMembersTenantsRequestContent
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*d = DeleteMembersTenantsRequestContent(body)
-	return nil
-}
-
-func (d *DeleteMembersTenantsRequestContent) MarshalJSON() ([]byte, error) {
-	type embed DeleteMembersTenantsRequestContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-var (
-	updateMembersRequestContentFieldRole = big.NewInt(1 << 0)
-)
-
-type UpdateMembersRequestContent struct {
-	// The new role to assign to the team member.
-	Role TeamMemberRoleEnum `json:"role" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (u *UpdateMembersRequestContent) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
-	}
-	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetRole sets the Role field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersRequestContent) SetRole(role TeamMemberRoleEnum) {
-	u.Role = role
-	u.require(updateMembersRequestContentFieldRole)
-}
-
-func (u *UpdateMembersRequestContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateMembersRequestContent
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*u = UpdateMembersRequestContent(body)
-	return nil
-}
-
-func (u *UpdateMembersRequestContent) MarshalJSON() ([]byte, error) {
-	type embed UpdateMembersRequestContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*u),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-var (
-	updateMembersTenantsRequestContentFieldTenants   = big.NewInt(1 << 0)
-	updateMembersTenantsRequestContentFieldRoles     = big.NewInt(1 << 1)
-	updateMembersTenantsRequestContentFieldClientIDs = big.NewInt(1 << 2)
-)
-
-type UpdateMembersTenantsRequestContent struct {
-	// A list of tenant ids
-	Tenants []TenantID `json:"tenants" url:"-"`
-	// List of roles to be assigned to the tenant member
-	Roles []TenantMemberRoleEnum `json:"roles" url:"-"`
-	// List of applications. Only if nested role is editor-specific-app
-	ClientIDs []ClientID `json:"client_ids,omitempty" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (u *UpdateMembersTenantsRequestContent) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
-	}
-	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetTenants sets the Tenants field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersTenantsRequestContent) SetTenants(tenants []TenantID) {
-	u.Tenants = tenants
-	u.require(updateMembersTenantsRequestContentFieldTenants)
-}
-
-// SetRoles sets the Roles field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersTenantsRequestContent) SetRoles(roles []TenantMemberRoleEnum) {
-	u.Roles = roles
-	u.require(updateMembersTenantsRequestContentFieldRoles)
-}
-
-// SetClientIDs sets the ClientIDs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateMembersTenantsRequestContent) SetClientIDs(clientIDs []ClientID) {
-	u.ClientIDs = clientIDs
-	u.require(updateMembersTenantsRequestContentFieldClientIDs)
-}
-
-func (u *UpdateMembersTenantsRequestContent) UnmarshalJSON(data []byte) error {
-	type unmarshaler UpdateMembersTenantsRequestContent
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*u = UpdateMembersTenantsRequestContent(body)
-	return nil
-}
-
-func (u *UpdateMembersTenantsRequestContent) MarshalJSON() ([]byte, error) {
-	type embed UpdateMembersTenantsRequestContent
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*u),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
-	return json.Marshal(explicitMarshaler)
 }

@@ -50,7 +50,7 @@ func (c *Client) List(
 		"https://teamSlug.teams.auth0.com",
 	)
 	endpointURL := internal.EncodeURL(
-		baseURL+"/api/tenants/%v/members",
+		baseURL+"/api/v1/tenants/%v/members",
 		tenantID,
 	)
 	queryParams, err := internal.QueryValuesWithDefaults(

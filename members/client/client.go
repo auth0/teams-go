@@ -50,7 +50,7 @@ func (c *Client) List(
 		c.baseURL,
 		"https://teamSlug.teams.auth0.com",
 	)
-	endpointURL := baseURL + "/api/members"
+	endpointURL := baseURL + "/api/v1/members"
 	queryParams, err := internal.QueryValuesWithDefaults(
 		request,
 		map[string]any{
@@ -104,71 +104,16 @@ func (c *Client) List(
 	return pager.GetPage(ctx, request.From)
 }
 
-// This endpoint invites a new member to the team and optionally grants them access to one or more tenants with specified roles
-func (c *Client) Invite(
-	ctx context.Context,
-	request *teams.InviteMembersRequestContent,
-	opts ...option.RequestOption,
-) (*teams.InviteMembersResponseContent, error) {
-	response, err := c.WithRawResponse.Invite(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Returns the team member's identity and team-level role. Tenant access is retrieved via /api/members/{id}/tenants/{environment}.
+// Returns the team member's identity and team-level role. Tenant access is retrieved via /api/v1/members/{member_id}/tenants/{environment}.
 func (c *Client) Get(
 	ctx context.Context,
 	// The unique ID of the team member to retrieve.
-	id string,
+	memberID string,
 	opts ...option.RequestOption,
 ) (*teams.GetMembersResponseContent, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
-		id,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// This endpoint deletes a team member from the team.
-func (c *Client) Delete(
-	ctx context.Context,
-	// The unique ID of the team member to delete.
-	id string,
-	opts ...option.RequestOption,
-) error {
-	_, err := c.WithRawResponse.Delete(
-		ctx,
-		id,
-		opts...,
-	)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// This endpoint can be used to change the team-level role for the team member
-func (c *Client) Update(
-	ctx context.Context,
-	// The unique ID of the team member to update
-	id string,
-	request *teams.UpdateMembersRequestContent,
-	opts ...option.RequestOption,
-) (*teams.UpdateMembersResponseContent, error) {
-	response, err := c.WithRawResponse.Update(
-		ctx,
-		id,
-		request,
+		memberID,
 		opts...,
 	)
 	if err != nil {

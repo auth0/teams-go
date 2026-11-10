@@ -95,5 +95,5 @@ func TestEnvironmentsListWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestEnvironmentsListWithWireMock", "GET", "/api/environments", nil, 1)
+	VerifyRequestCount(t, "TestEnvironmentsListWithWireMock", "GET", "/api/v1/environments", nil, 1)
 }

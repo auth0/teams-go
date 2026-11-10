@@ -15,7 +15,7 @@ var (
 
 type ListEnvironmentsResponseContent struct {
 	// List of environments associated with the Team where tenants exist.
-	Environments []Environment `json:"environments" url:"environments"`
+	Environments []HostEnvironment `json:"environments" url:"environments"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -24,7 +24,7 @@ type ListEnvironmentsResponseContent struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListEnvironmentsResponseContent) GetEnvironments() []Environment {
+func (l *ListEnvironmentsResponseContent) GetEnvironments() []HostEnvironment {
 	if l == nil {
 		return nil
 	}
@@ -47,7 +47,7 @@ func (l *ListEnvironmentsResponseContent) require(field *big.Int) {
 
 // SetEnvironments sets the Environments field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListEnvironmentsResponseContent) SetEnvironments(environments []Environment) {
+func (l *ListEnvironmentsResponseContent) SetEnvironments(environments []HostEnvironment) {
 	l.Environments = environments
 	l.require(listEnvironmentsResponseContentFieldEnvironments)
 }
